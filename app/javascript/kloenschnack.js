@@ -5,7 +5,7 @@ var posts_queue = null;
 var posts_in_timeline = new Array();
 
 /* config parameters */
-var refresh_timeline_millis = 4000;
+var refresh_timeline_millis = 2000;
 var process_queue_millis = 1000;
 
 $(function(){

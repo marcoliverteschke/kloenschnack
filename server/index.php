@@ -5,7 +5,12 @@
 
 
 	Flight::before('start', function(){
-		R::setup('mysql:host=localhost; dbname=kloenschnack_dev','root','root');
+		if($_SERVER['SERVER_NAME'] == 'kloenschnack.leopard.planwerk6.local')
+		{
+			R::setup('mysql:host=localhost; dbname=kloenschnack','kloenschnack','eireeM2ohTe2aejoh7ooGhah');
+		} else {
+			R::setup('mysql:host=localhost; dbname=kloenschnack_dev','root','root');
+		}
 	});
 	
 	
