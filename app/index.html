@@ -1,0 +1,60 @@
+<?php
+	if(!isset($_COOKIE['kloenschnack_session']) || !preg_match("/^[0-9]{3}\-[0-9]+\-[0-9]+$/", $_COOKIE['kloenschnack_session']))
+	{
+		header('Location: /server/login');
+	}
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/lessc.inc.php');
+	
+	$less = new lessc;
+	$less->checkedCompile($_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.less', $_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.css');
+	?><!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>kloenschnack — really simple team messaging</title>
+	<meta name="description" content="kloenschnack — really simple team messaging">
+	<meta name="author" content="Marc-Oliver Teschke">
+	<meta name = "viewport" content = "initial-scale=1.0">
+	<link rel="stylesheet" href="/min/?b=stylesheets&f=normalize.css,font-awesome.css,kloenschnack.css">
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<section class="timeline container"></section>
+	<section class="talkbox">
+		<section class="container">
+			<form action="" method="" class="">
+				<textarea></textarea>
+				<input class="clearfix" type="submit" value="&#x23CE; Abschicken">
+				<span class="button fileinput-button">
+					<i class="icon-upload-alt"></i>
+					<span>Datei hochladen</span>
+					<input id="fileupload" type="file" name="files[]" data-url="/server/file/upload/">
+				</span>
+			</form>
+		</section>
+	</section>
+	<script src="/javascript/jquery.js"></script>
+	<script src="/javascript/handlebars.js"></script>
+	<script src="/javascript/underscore.js"></script>
+	<script src="/javascript/modernizr.js"></script>
+	<script src="/javascript/jquery.cookies.2.2.0.min.js"></script>
+	<script src="/javascript/phpjs/date.js"></script>
+	<script src="/javascript/phpjs/get_html_translation_table.js"></script>
+	<script src="/javascript/phpjs/html_entity_decode.js"></script>
+	<script src="/javascript/phpjs/htmlentities.js"></script>
+	<script src="/javascript/phpjs/nl2br.js"></script>
+	<script src="/javascript/phpjs/trim.js"></script>
+	<script src="/javascript/models/Post.js"></script>
+	<script src="/javascript/models/PostsQueue.js"></script>
+	<script src="/javascript/fileupload/vendor/jquery.ui.widget.js"></script>
+	<script src="/javascript/fileupload/jquery.iframe-transport.js"></script>
+	<script src="/javascript/fileupload/jquery.fileupload.js"></script>
+	<script src="/javascript/kloenschnack.js"></script>
+	<script id="post-template" type="text/x-handlebars-template">
+		<span class="person">jemand sagte {{humanTime created}} : </span>
+		{{#if multiline}}<pre class="post">{{else}}<p class="post">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
+	</script>
+</body>
+</html>
