@@ -5,7 +5,7 @@ var posts_queue = null;
 var posts_in_timeline = new Array();
 
 /* config parameters */
-var refresh_timeline_millis = 2000;
+var refresh_timeline_millis = 5000;
 var process_queue_millis = 1000;
 
 $(function(){
@@ -32,7 +32,15 @@ $(function(){
 	
 	$('.talkbox textarea').focus();
 
-	$('#fileupload').fileupload({});
+	$('#fileupload').fileupload({
+		debug: true,
+		onProgress: function(id, fileName, loaded, total){
+			console.log(id);
+			console.log(fileName);
+			console.log(loaded);
+			console.log(total);
+		}
+	});
 
 });
 
