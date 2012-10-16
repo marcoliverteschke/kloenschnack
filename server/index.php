@@ -17,6 +17,29 @@
 	Flight::route('/login', function(){
 		Flight::render('login.php');
 	});
+	
+	
+	Flight::route('/auth', function(){
+		$authd = false;
+		$key_fragments = explode('-', Flight::request()->query['key']);
+		if(count($key_fragments) == 3)
+		{
+			$user	=	R::findOne(
+							'users', 
+							'id = ? AND last_login = ?', 
+							array(
+								$key_fragments[1],
+								$key_fragments[2]								
+							)
+						);
+			if($user)
+			{
+				$authd = true;
+			}
+		}
+		Flight::view()->set('data', json_encode(array('authorized' => $authd)));
+		Flight::render('json.php');
+	});
 
 
 	Flight::route('/user', function(){
@@ -30,11 +53,14 @@
 								kloencrypt(Flight::request()->data['user']['password'])));
 			if($user)
 			{
+				$now = time();
 				setcookie(
 					'kloenschnack_session', 
-					rand(100, 999) . '-' . $user->id . '-' . time(), 
-					time() + 60 * 60 * 24 * 14, 
+					rand(100, 999) . '-' . $user->id . '-' . $now, 
+					$now + 60 * 60 * 24 * 14, 
 					'/');
+				$user->last_login = $now;
+				R::store($user);
 				header('Location: /');
 			} else {
 				Flight::redirect('/login');

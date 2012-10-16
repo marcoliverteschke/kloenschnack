@@ -35,10 +35,6 @@ $(function(){
 	$('#fileupload').fileupload({
 		debug: true,
 		onProgress: function(id, fileName, loaded, total){
-			console.log(id);
-			console.log(fileName);
-			console.log(loaded);
-			console.log(total);
 		}
 	});
 
@@ -47,6 +43,7 @@ $(function(){
 
 function do_post()
 {
+	auth();
 	var new_post = new Post;
 	new_post.body = nl2br(htmlentities(trim($('.talkbox textarea').val())));
 	posts_queue.pushPostToQueue(new_post);
@@ -61,6 +58,7 @@ function do_post()
 
 function refresh_timeline()
 {
+	auth();
 	$.get('/server/post', function(data){
 		_.each(data, function(post){
 			if(typeof posts_in_timeline[post.id] == "undefined")
@@ -86,6 +84,17 @@ function refresh_timeline()
 function scroll_to_bottom()
 {
 	$('body,html').scrollTop($(document).height());
+}
+
+
+function auth()
+{
+	$.get('/server/auth', {key : $.cookies.get('kloenschnack_session')}, function(data){
+		if(!data || typeof data == "undefined" || !data.authorized)
+		{
+			window.location.replace("/server/login");
+		}
+	});
 }
 
 

@@ -35,7 +35,11 @@
 			</form>
 		</section>
 	</section>
-	<script src="/min/?b=javascript&f=jquery.js,handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js,phpjs/date.js,phpjs/get_html_translation_table.js,phpjs/html_entity_decode.js,phpjs/htmlentities.js,phpjs/nl2br.js,phpjs/trim.js,models/Post.js,models/PostsQueue.js,fileupload/vendor/jquery.ui.widget.js,fileupload/jquery.iframe-transport.js,fileupload/jquery.fileupload.js"></script>
+	<script src="/javascript/jquery.js"></script>
+	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js"></script>
+	<script src="/min/?b=javascript/phpjs&f=date.js,get_html_translation_table.js,html_entity_decode.js,htmlentities.js,nl2br.js,trim.js"></script>
+	<script src="/min/?b=javascript/models&f=Post.js,PostsQueue.js"></script>
+	<script src="/min/?b=javascript/fileupload&f=vendor/jquery.ui.widget.js,jquery.iframe-transport.js,jquery.fileupload.js"></script>
 <!--	<script src="/javascript/jquery.js"></script>
 	<script src="/javascript/handlebars.js"></script>
 	<script src="/javascript/underscore.js"></script>
@@ -53,7 +57,7 @@
 	<script src="/javascript/fileupload/jquery.iframe-transport.js"></script>
 	<script src="/javascript/fileupload/jquery.fileupload.js"></script>
 	-->
-	<script src="/javascript/kloenschnack.js"></script>
+	<script src="/min/?b=javascript&f=kloenschnack.js"></script>
 	<script id="post-template" type="text/x-handlebars-template">
 		<span class="person">jemand sagte {{humanTime created}} : </span>
 		{{#if multiline}}<pre class="post">{{else}}<p class="post">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
