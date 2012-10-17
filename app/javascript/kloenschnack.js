@@ -65,7 +65,7 @@ function refresh_timeline()
 			{
 				var new_post = new Post;
 				new_post.setId(post.id);
-				new_post.setBody(post.body);
+				new_post.setBody(urlify(post.body));
 				new_post.setCreated(post.created);
 				new_post.setAuthor(post.author);
 				new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
@@ -96,6 +96,20 @@ function auth()
 			window.location.replace("/server/login");
 		}
 	});
+}
+
+
+function urlify(text)
+{
+	/*
+	 * via http://stackoverflow.com/questions/1500260/detect-urls-in-text-with-javascript
+	 */
+    var urlRegex = /(https?:\/\/[^\s]+)/g; // viel zu ungenau, aber zum Testen reicht es allemal!
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
 
