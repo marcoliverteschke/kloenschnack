@@ -72,6 +72,13 @@
 
 
 	Flight::route('/logout', function(){
+		setcookie(
+			'kloenschnack_session', 
+			null, 
+			$now - 60 * 60 * 24 * 14, 
+			'/');
+		unset($_COOKIE['kloenschnack_session']);
+		Flight::redirect('/login');
 	});
 
 	
