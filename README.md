@@ -7,3 +7,9 @@
 * write README.md
 * document used libraries
 * finish login system
+* Archiv
+* Suche
+* ordentliches File-Handling
+* Benutzerverwaltung
+* aktive Benutzer-Liste
+* diverse Bugfixes
