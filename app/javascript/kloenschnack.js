@@ -45,12 +45,15 @@ function do_post()
 {
 	auth();
 	var new_post = new Post;
-	new_post.body = nl2br(htmlentities(trim($('.talkbox textarea').val())));
-	posts_queue.pushPostToQueue(new_post);
-	if(posts_queue.isProcessing() == false)
+	if(trim($('.talkbox textarea').val()).length > 0)
 	{
-		posts_queue.setProcessing(true);
-		window.setInterval(posts_queue.process, process_queue_millis);
+		new_post.body = nl2br(htmlentities(trim($('.talkbox textarea').val())));
+		posts_queue.pushPostToQueue(new_post);
+		if(posts_queue.isProcessing() == false)
+		{
+			posts_queue.setProcessing(true);
+			window.setInterval(posts_queue.process, process_queue_millis);
+		}
 	}
 	$('.talkbox textarea').val('');
 }
@@ -93,7 +96,7 @@ function auth()
 	$.get('/server/auth', {key : $.cookies.get('kloenschnack_session')}, function(data){
 		if(!data || typeof data == "undefined" || !data.authorized)
 		{
-			window.location.replace("/server/login");
+			window.location.replace("/server/logout");
 		}
 	});
 }
