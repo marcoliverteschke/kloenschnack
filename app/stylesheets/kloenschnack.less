@@ -76,7 +76,47 @@ pre {
 		resize: none;
 		width: 50%;
 	}
+}
+
+.hanging-tabs {
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.tabbar {
+	.container {
+		padding: 0;
+	}
 	
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	ul {
+		float: right;
+		
+		li {
+			float: left;
+			
+			a {
+				background-color: #eeeeee;
+				color: #000000;
+				display: inline-block;
+				padding: .5em 1em;
+				text-decoration: none;
+				
+				.drop-shadow(0, 1px, 2px, .5);
+				
+				&:hover {
+					.drop-shadow(0, 2px, 2px, .5);
+				}
+			}
+		}
+	}
 }
 
 input, .button {
