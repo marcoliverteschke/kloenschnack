@@ -4,6 +4,7 @@ function Post ()
 	this.body = "";
 	this.created = 0;
 	this.multiline = false;
+	this.author = "";
 	
 	
 	this.setId = function(newId)
@@ -46,6 +47,16 @@ function Post ()
 		return this.multiline;
 	};
 	
+	this.setAuthor = function(newAuthor)
+	{
+		this.author = newAuthor;
+	}
+	
+	this.getAuthor = function()
+	{
+		return this.author;
+	};
+
 	this.toJson = function()
 	{
 		var returnValue = {};
@@ -53,6 +64,7 @@ function Post ()
 		returnValue.body = this.getBody();
 		returnValue.created = this.getCreated();
 		returnValue.multiline = this.isMultiline();
+		returnValue.author = this.getAuthor();
 		return returnValue;
 	}
 }

@@ -5,7 +5,7 @@ var posts_queue = null;
 var posts_in_timeline = new Array();
 
 /* config parameters */
-var refresh_timeline_millis = 5000;
+var refresh_timeline_millis = 2500;
 var process_queue_millis = 1000;
 
 $(function(){
@@ -61,12 +61,14 @@ function refresh_timeline()
 	auth();
 	$.get('/server/post', function(data){
 		_.each(data, function(post){
+			console.log(post);
 			if(typeof posts_in_timeline[post.id] == "undefined")
 			{
 				var new_post = new Post;
 				new_post.setId(post.id);
 				new_post.setBody(post.body);
 				new_post.setCreated(post.created);
+				new_post.setAuthor(post.author);
 				new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
 				posts_in_timeline[new_post.getId()] = new_post;
 				var output = post_template(new_post.toJson());
