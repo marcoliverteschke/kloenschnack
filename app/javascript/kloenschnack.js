@@ -61,7 +61,6 @@ function refresh_timeline()
 	auth();
 	$.get('/server/post', function(data){
 		_.each(data, function(post){
-			console.log(post);
 			if(typeof posts_in_timeline[post.id] == "undefined")
 			{
 				var new_post = new Post;

@@ -13,3 +13,5 @@
 * Benutzerverwaltung
 * aktive Benutzer-Liste
 * diverse Bugfixes
+* nur ein Login gleichzeitig kotzt User an
+* Link-Detection
