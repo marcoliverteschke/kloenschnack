@@ -83,6 +83,7 @@
 
 	
 	Flight::route('/post/create', function(){
+		update_activity_time();
 		$post = R::dispense('posts');
 		$post->body = Flight::request()->data['body'];
 		$post->created = time();
@@ -93,6 +94,7 @@
 	
 	
 	Flight::route('/post', function(){
+		update_activity_time();
 		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
 
 		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
@@ -131,6 +133,7 @@
 	
 
 	Flight::route('/file/upload', function(){
+		update_activity_time();
 		$assets_folder = $_SERVER['DOCUMENT_ROOT'] . '/assets';
 		if(!file_exists($assets_folder))
 		{
@@ -217,6 +220,14 @@
 			}
 		}
 		return $user;
+	}
+	
+	
+	function update_activity_time()
+	{
+		$current_user = current_user();
+		$current_user->last_activity = time();
+		R::store($current_user);
 	}
 	
 	
