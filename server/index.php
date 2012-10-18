@@ -3,7 +3,6 @@
 	require_once('flight/Flight.php');
 	require_once('includes/rb.php');
 
-
 	Flight::before('start', function(){
 		if($_SERVER['SERVER_NAME'] == 'kloenschnack.leopard.planwerk6.local')
 		{
@@ -12,13 +11,11 @@
 			R::setup('mysql:host=localhost; dbname=kloenschnack_dev','root','root');
 		}
 	});
-	
-	
+
 	Flight::route('/login', function(){
 		Flight::render('login.php');
 	});
-	
-	
+
 	Flight::route('/auth', function(){
 		$authd = false;
 		$key_fragments = explode('-', Flight::request()->query['key']);
@@ -40,7 +37,6 @@
 		Flight::view()->set('data', json_encode(array('authorized' => $authd)));
 		Flight::render('json.php');
 	});
-
 
 	Flight::route('/user', function(){
 		if(Flight::request()->method == "POST")
@@ -70,7 +66,6 @@
 		}
 	});
 
-
 	Flight::route('/logout', function(){
 		setcookie(
 			'kloenschnack_session', 
@@ -81,7 +76,6 @@
 		Flight::redirect('/login');
 	});
 
-	
 	Flight::route('/post/create', function(){
 		update_activity_time();
 		$post = R::dispense('posts');
@@ -91,8 +85,7 @@
 		$post->user_id = $current_user->id;
 		$id = R::store($post);
 	});
-	
-	
+
 	Flight::route('/post', function(){
 		update_activity_time();
 		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
@@ -130,7 +123,6 @@
 		Flight::view()->set('data', json_encode($timeline_array));
 		Flight::render('json.php');
 	});
-	
 
 	Flight::route('/file/upload', function(){
 		update_activity_time();
@@ -161,12 +153,9 @@
 		}
 	});
 
-
 	Flight::route('/', function(){ });
 
-	
 	Flight::start();
-	
 	
 	function sort_timeline($a, $b)
 	{
@@ -176,7 +165,6 @@
 		}
 		return $a['created'] > $b['created'] ? +1 : -1;
 	}
-	
 	
 	function get_file_icon($type)
 	{
@@ -188,19 +176,16 @@
 		return $icon_path . '/file.png';
 	}
 	
-	
 	function kloencrypt($in)
 	{
 		return crypt($in, '$2y$31$kloenschnacktrittcampf$');
 	}
 	
-	
 	function abbreviate_name($name)
 	{
 		return substr($name, 0, strrpos($name, " "));
 	}
-	
-	
+
 	function current_user()
 	{
 		$user = null;
@@ -221,13 +206,11 @@
 		}
 		return $user;
 	}
-	
-	
+
 	function update_activity_time()
 	{
 		$current_user = current_user();
 		$current_user->last_activity = time();
 		R::store($current_user);
 	}
-	
 	
