@@ -119,6 +119,27 @@ pre {
 	}
 }
 
+.drawer {
+	background-color: #eeeeee;
+	position: fixed;
+	
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	ul {
+		padding: .5em 1em;
+		.drop-shadow(0, 1px, 2px, .5);
+	}
+	
+	&.users {
+		right: 0;
+		top: 3em;
+	}
+}
+
 input, .button {
 	font-family: @font-stack-sans-serif;
 }
@@ -156,7 +177,7 @@ input[type="submit"], .button {
 		width: 100%;
 	}
 	
-	.fileinput-button {
+	.fileinput-button, .drawer {
 		display: none;
 	}
 }

@@ -7,16 +7,21 @@ var posts_in_timeline = new Array();
 /* config parameters */
 var refresh_timeline_millis = 2500;
 var process_queue_millis = 1000;
+var refresh_users_list_millis = 10000;
 
 $(function(){
 
 	post_template_source = $('#post-template').html();
 	post_template = Handlebars.compile(post_template_source);
+	users_list_entry_template_source = $('#active-users-list-entry-template').html();
+	users_list_entry_template = Handlebars.compile(users_list_entry_template_source);
 	
 	posts_queue = new PostsQueue;
 
 	refresh_timeline();
 	window.setInterval(refresh_timeline, refresh_timeline_millis);
+	refresh_users_list();
+	window.setInterval(refresh_users_list, refresh_users_list_millis);
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
@@ -79,6 +84,22 @@ function refresh_timeline()
 					$('.timeline').append(output);
 					scroll_to_bottom();
 				}
+			}
+		});
+	}, 'json');
+}
+
+
+function refresh_users_list()
+{
+	auth();
+	$.get('/server/user/active', function(data){
+		$('.users ul').empty();
+		_.each(data, function(user){
+			var output = users_list_entry_template(user);
+			if(output.length > 0)
+			{
+				$('.users ul').append(output);
 			}
 		});
 	}, 'json');

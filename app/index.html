@@ -30,6 +30,10 @@
 			</ul>
 		</section>
 	</section>
+	<section class="drawer users">
+		<ul>
+		</ul>
+	</section>
 	<section class="timeline container"></section>
 	<section class="talkbox">
 		<section class="container">
@@ -70,6 +74,9 @@
 	<script id="post-template" type="text/x-handlebars-template">
 		<span class="person">{{author}} sagte {{humanTime created}} : </span>
 		{{#if multiline}}<pre class="post">{{else}}<p class="post">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
+	</script>
+	<script id="active-users-list-entry-template" type="text/x-handlebars-template">
+		<li>{{name}}</li>
 	</script>
 </body>
 </html>
