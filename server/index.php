@@ -66,6 +66,17 @@
 		}
 	});
 
+	Flight::route('/user/active', function(){
+		$users = R::find('users', ' last_activity > ? ORDER BY realname ASC', array(time() - 1200));
+		$users_array = array();
+		foreach($users as $user)
+		{
+			$users_array[] = $user->realname;
+		}
+		Flight::view()->set('data', json_encode($users_array));
+		Flight::render('json.php');
+	});
+
 	Flight::route('/logout', function(){
 		setcookie(
 			'kloenschnack_session', 
