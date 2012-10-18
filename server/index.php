@@ -79,8 +79,11 @@
 
 	Flight::route('/logout', function(){
 		$current_user = current_user();
-		$current_user->last_activity = time() - 601;
-		R::store($current_user);
+		if($current_user != null)
+		{
+			$current_user->last_activity = time() - 601;
+			R::store($current_user);
+		}
 
 		setcookie(
 			'kloenschnack_session', 
@@ -225,7 +228,10 @@
 	function update_activity_time()
 	{
 		$current_user = current_user();
-		$current_user->last_activity = time();
-		R::store($current_user);
+		if($current_user != null)
+		{
+			$current_user->last_activity = time();
+			R::store($current_user);
+		}
 	}
 	
