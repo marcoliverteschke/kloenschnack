@@ -4,6 +4,10 @@ var post_template = null;
 var posts_queue = null;
 var posts_in_timeline = new Array();
 
+var window_in_focus = true;
+var unread_posts = 0;
+var default_document_title = '';
+
 /* config parameters */
 var refresh_timeline_millis = 2500;
 var process_queue_millis = 1000;
@@ -23,6 +27,8 @@ $(function(){
 	refresh_users_list();
 	window.setInterval(refresh_users_list, refresh_users_list_millis);
 
+	default_document_title = $(document).find('title').text();
+
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
 		{
@@ -41,6 +47,17 @@ $(function(){
 		debug: true,
 		onProgress: function(id, fileName, loaded, total){
 		}
+	});
+	
+	$(window).blur(function(){
+		window_in_focus = false;
+	});
+
+	$(window).focus(function(){
+		window_in_focus = true;
+		unread_posts = 0;
+		window.fluid.dockBadge = '';
+		$(document).find('title').text(default_document_title);
 	});
 
 });
@@ -83,6 +100,15 @@ function refresh_timeline()
 				{
 					$('.timeline').append(output);
 					scroll_to_bottom();
+					if(!window_in_focus)
+					{
+						unread_posts++;
+						$(document).find('title').text('(' + unread_posts + ') ' + default_document_title);
+						if(typeof window.fluid != "undefined")
+						{
+							window.fluid.dockBadge = unread_posts;
+						}
+					}
 				}
 			}
 		});
