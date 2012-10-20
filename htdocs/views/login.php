@@ -23,7 +23,7 @@
 <body>
 	<section class="container">
 		<h1>kloenschnack – login</h1>
-		<form action="/server/user" method="POST">
+		<form action="/user" method="POST">
 			<input name="user[name]" placeholder="benutzername" type="text" />
 			<input name="user[password]" placeholder="passwort" type="password" />
 			<input type="submit" value="Anmelden" />

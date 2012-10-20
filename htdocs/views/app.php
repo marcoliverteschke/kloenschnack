@@ -1,13 +1,4 @@
-<?php
-	if(!isset($_COOKIE['kloenschnack_session']) || !preg_match("/^[0-9]{3}\-[0-9]+\-[0-9]+$/", $_COOKIE['kloenschnack_session']))
-	{
-		header('Location: /server/login');
-	}
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/lessc.inc.php');
-	
-	$less = new lessc;
-	$less->checkedCompile($_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.less', $_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.css');
-	?><!doctype html>
+<!doctype html>
 <html class="no-js" lang="en">
 <head>
 	<meta charset="utf-8">
@@ -26,7 +17,7 @@
 	<section class="tabbar hanging-tabs">
 		<section class="container">
 			<ul class="clearfix">
-				<li><a href="/server/logout">abmelden</a></li>
+				<li><a href="/logout">abmelden</a></li>
 			</ul>
 		</section>
 	</section>
@@ -43,7 +34,7 @@
 				<span class="button fileinput-button">
 					<i class="icon-upload-alt"></i>
 					<span>datei hochladen</span>
-					<input id="fileupload" type="file" name="files[]" data-url="/server/file/upload/">
+					<input id="fileupload" type="file" name="files[]" data-url="/file/upload/">
 				</span>
 			</form>
 		</section>

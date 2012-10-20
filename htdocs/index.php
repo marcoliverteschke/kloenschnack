@@ -2,8 +2,11 @@
 
 	require_once('flight/Flight.php');
 	require_once('includes/rb.php');
+	require_once('includes/lessc.inc.php');
 
 	Flight::before('start', function(){
+		$less = new lessc;
+		$less->checkedCompile('stylesheets/kloenschnack.less', 'stylesheets/kloenschnack.css');
 		if($_SERVER['SERVER_NAME'] == 'kloenschnack.leopard.planwerk6.local')
 		{
 			R::setup('mysql:host=localhost; dbname=kloenschnack','kloenschnack','eireeM2ohTe2aejoh7ooGhah');
@@ -171,7 +174,13 @@
 		}
 	});
 
-	Flight::route('/', function(){ });
+	Flight::route('/', function(){
+		if(!isset($_COOKIE['kloenschnack_session']) || !preg_match("/^[0-9]{3}\-[0-9]+\-[0-9]+$/", $_COOKIE['kloenschnack_session']))
+		{
+			Flight::redirect('/login');
+		}
+		Flight::render('app.php');
+	});
 
 	Flight::start();
 	

@@ -24,7 +24,6 @@ $(function(){
 
 	refresh_timeline();
 	window.setInterval(refresh_timeline, refresh_timeline_millis);
-	refresh_users_list();
 	window.setInterval(refresh_users_list, refresh_users_list_millis);
 
 	default_document_title = $(document).find('title').text();
@@ -84,7 +83,7 @@ function do_post()
 function refresh_timeline()
 {
 	auth();
-	$.get('/server/post', function(data){
+	$.get('/post', function(data){
 		_.each(data, function(post){
 			if(typeof posts_in_timeline[post.id] == "undefined")
 			{
@@ -112,6 +111,7 @@ function refresh_timeline()
 				}
 			}
 		});
+		refresh_users_list();
 	}, 'json');
 }
 
@@ -119,7 +119,7 @@ function refresh_timeline()
 function refresh_users_list()
 {
 	auth();
-	$.get('/server/user/active', function(data){
+	$.get('/user/active', function(data){
 		$('.users ul').empty();
 		_.each(data, function(user){
 			var output = users_list_entry_template(user);
@@ -140,10 +140,10 @@ function scroll_to_bottom()
 
 function auth()
 {
-	$.get('/server/auth', {key : $.cookies.get('kloenschnack_session')}, function(data){
+	$.get('/auth', {key : $.cookies.get('kloenschnack_session')}, function(data){
 		if(!data || typeof data == "undefined" || !data.authorized)
 		{
-			window.location.replace("/server/logout");
+			window.location.replace("/logout");
 		}
 	});
 }
