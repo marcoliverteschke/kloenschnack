@@ -131,7 +131,7 @@
 			{
 				$body = '<a href="' . $link_to_file . '" target="_blank"><img class="preview" src="' . $link_to_file . '" /></a>' . $body;
 			} else {
-				$body = '<a href="' . $link_to_file . '" target="_blank"><img class="fileicon" src="' . get_file_icon($file['type']) . '" /></a>' . $body;
+				$body = '<a href="' . $link_to_file . '" target="_blank"><img class="fileicon" src="' . get_file_icon($file['type'], $file['name']) . '" /></a>' . $body;
 			}
 			$body = '<span class="file">' . $body . '</span>';
 			$timeline_array[md5('file-' . $file['id'])]['body'] = $body;
@@ -193,12 +193,23 @@
 		return $a['created'] > $b['created'] ? +1 : -1;
 	}
 	
-	function get_file_icon($type)
+	function get_file_icon($type, $name)
 	{
 		$icon_path = '/images/fileicons';
 		
+		if(preg_match("/text\/plain$/", $type))
+			return $icon_path . '/txt.png';
 		if(preg_match("/\/pdf$/", $type))
 			return $icon_path . '/pdf.png';
+			
+		if(preg_match("/application\/octet-stream$/", $type))
+		{
+			$filename_fragments = explode('.', $name);
+			if(preg_match("/^pdf$/", $filename_fragments[count($filename_fragments) - 1]))
+				return $icon_path . '/pdf.png';
+			if(preg_match("/^(md|markdown|mdown)$/", $filename_fragments[count($filename_fragments) - 1]))
+				return $icon_path . '/txt.png';
+		}
 		
 		return $icon_path . '/file.png';
 	}
