@@ -12,7 +12,7 @@
 
 body {
 	font-family: @font-stack-serif;
-	margin-bottom: 10em;
+	margin-bottom: 8em;
 }
 
 .container {
@@ -57,22 +57,21 @@ pre {
 
 
 .talkbox {
-	background-color: #ffffff;
+	background-color: #eeeeee;
 	bottom: 0;
-	box-shadow: 0 -2px 4px #888888;
-	height: 9em;
+	.drop-shadow(0, -2px, 4px, .2);
+	height: 7em;
 	left: 0;
 	position: fixed;
 	width: 100%;
 	
 	.container {
-		background-color: #eeeeee;
 		padding-bottom: 1em;
 		padding-top: 1em;
 	}
 	
 	textarea {
-		height: 7em;
+		height: 4em;
 		resize: none;
 		width: 50%;
 	}
@@ -86,6 +85,9 @@ pre {
 }
 
 .tabbar {
+	font-family: @font-stack-sans-serif;
+	font-size: .9em;
+	
 	.container {
 		padding: 0;
 	}
@@ -121,6 +123,8 @@ pre {
 
 .drawer {
 	background-color: #eeeeee;
+	font-family: @font-stack-sans-serif;
+	font-size: .9em;
 	position: fixed;
 	
 	ul, li {
@@ -132,6 +136,10 @@ pre {
 	ul {
 		padding: .5em 1em;
 		.drop-shadow(0, 1px, 2px, .5);
+		
+		li {
+			padding: .25em 0;
+		}
 	}
 	
 	&.users {
