@@ -31,6 +31,9 @@
 * test file upload with a variety of files
 * implement user management functions
 * allow users to log-in from multiple locations?
+* add emoticons http://os.alfajango.com/css-emoticons/
+* CSS facelift
+* update libraries
 
 ### ToDone
 
