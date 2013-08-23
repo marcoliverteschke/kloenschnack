@@ -1,6 +1,6 @@
 <?php
 
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/lessc.inc.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/lessc.0.4.0.inc.php');
 	
 	$less = new lessc;
 	$less->checkedCompile($_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.less', $_SERVER['DOCUMENT_ROOT'] . '/stylesheets/kloenschnack.css');

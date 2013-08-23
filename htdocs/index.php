@@ -2,7 +2,6 @@
 
 	require_once('flight/Flight.php');
 	require_once('includes/rb.php');
-//	require_once('includes/lessc.0.3.8.inc.php');
 	require_once('includes/lessc.0.4.0.inc.php');
 
 	Flight::before('start', function(){
@@ -47,7 +46,7 @@
 		{
 			$user	=	R::findOne(
 							'users', 
-							'name = ? AND password = ?', 
+							'name = ?',  AND password = ?
 							array(
 								Flight::request()->data['user']['name'], 
 								kloencrypt(Flight::request()->data['user']['password'])));
