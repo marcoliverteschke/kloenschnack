@@ -8,7 +8,7 @@
 	<meta name = "viewport" content = "initial-scale=1.0">
 	<link rel="apple-touch-icon" href="/images/apple-touch-icon-precomposed.png">
 	<link rel="shortcut icon" href="/images/favicon.ico" />
-	<link rel="stylesheet" href="/min/?b=stylesheets&f=normalize.css,font-awesome.css,kloenschnack.css">
+	<link rel="stylesheet" href="/min/?b=stylesheets&f=normalize.css,jquery.cssemoticons.css,font-awesome.css,kloenschnack.css">
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -40,7 +40,7 @@
 		</section>
 	</section>
 	<script src="/javascript/jquery.js"></script>
-	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js"></script>
+	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js,jquery.cssemoticons.min.js"></script>
 	<script src="/min/?b=javascript/phpjs&f=date.js,get_html_translation_table.js,html_entity_decode.js,htmlentities.js,nl2br.js,trim.js"></script>
 	<script src="/min/?b=javascript/models&f=Post.js,PostsQueue.js"></script>
 	<script src="/min/?b=javascript/fileupload&f=vendor/jquery.ui.widget.js,jquery.iframe-transport.js,jquery.fileupload.js"></script>

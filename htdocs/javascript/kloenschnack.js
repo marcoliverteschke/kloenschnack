@@ -111,6 +111,7 @@ function refresh_timeline()
 				}
 			}
 		});
+		$('.post').emoticonize({ 'animate': false });
 		refresh_users_list();
 	}, 'json');
 }
