@@ -174,6 +174,13 @@
 		}
 	});
 
+	Flight::route('/archive', function(){
+		// get distinct days with activity
+		// SELECT DATE(FROM_UNIXTIME(created)) AS date FROM posts UNION SELECT DATE(FROM_UNIXTIME(created)) as date FROM files ORDER BY date ASC;
+		// get posts for last day or day from parameter
+		// display posts
+	});
+
 	Flight::route('/', function(){
 		if(!isset($_COOKIE['kloenschnack_session']) || !preg_match("/^[0-9]{3}\-[0-9]+\-[0-9]+$/", $_COOKIE['kloenschnack_session']))
 		{
