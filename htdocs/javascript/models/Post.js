@@ -5,6 +5,7 @@ function Post ()
 	this.created = 0;
 	this.multiline = false;
 	this.author = "";
+	this.type = "post";
 	
 	
 	this.setId = function(newId)
@@ -57,6 +58,17 @@ function Post ()
 		return this.author;
 	};
 
+	this.setType = function(newType)
+	{
+		this.type = newType;
+	}
+	
+	this.getType = function()
+	{
+		return this.type;
+	};
+
+
 	this.toJson = function()
 	{
 		var returnValue = {};
@@ -65,6 +77,7 @@ function Post ()
 		returnValue.created = this.getCreated();
 		returnValue.multiline = this.isMultiline();
 		returnValue.author = this.getAuthor();
+		returnValue.type = this.getType();
 		return returnValue;
 	}
 }

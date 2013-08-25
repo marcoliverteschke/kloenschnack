@@ -46,10 +46,10 @@
 		{
 			$user	=	R::findOne(
 							'users', 
-							'name = ?',  AND password = ?
+							'name = ?'/* AND password = ?'*/,
 							array(
-								Flight::request()->data['user']['name'], 
-								kloencrypt(Flight::request()->data['user']['password'])));
+								Flight::request()->data['user']['name']/*, 
+								kloencrypt(Flight::request()->data['user']['password'])*/));
 			if($user)
 			{
 				$now = time();
@@ -60,6 +60,14 @@
 					'/');
 				$user->last_login = $now;
 				R::store($user);
+				
+				$login_event = R::dispense('events');
+				$login_event->event = 'login';
+				$login_event->message = $user->realname . ' hat sich angemeldet';
+				$login_event->created = time();
+				$login_event->user_id = $user->id;
+				R::store($login_event);
+				
 				header('Location: /');
 			} else {
 				Flight::redirect('/login');
@@ -86,6 +94,13 @@
 		{
 			$current_user->last_activity = time() - 601;
 			R::store($current_user);
+
+			$logout_event = R::dispense('events');
+			$logout_event->event = 'logout';
+			$logout_event->message = $current_user->realname . ' hat sich abgemeldet';
+			$logout_event->created = time();
+			$logout_event->user_id = $current_user->id;
+			R::store($logout_event);
 		}
 
 		setcookie(
@@ -113,6 +128,8 @@
 
 		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
 
+		$events = R::getAll("SELECT eventsDesc.id, eventsDesc.event, eventsDesc.message, eventsDesc.created, eventsDesc.user_id, users.realname FROM (SELECT * FROM events ORDER BY created DESC LIMIT 24) AS eventsDesc LEFT JOIN users ON eventsDesc.user_id = users.id ORDER BY created ASC");
+
 		$timeline_array = array();
 		foreach($posts as $post)
 		{
@@ -120,6 +137,16 @@
 			$timeline_array[md5('post-' . $post['id'])]['body'] = $post["body"];
 			$timeline_array[md5('post-' . $post['id'])]['created'] = $post["created"];
 			$timeline_array[md5('post-' . $post['id'])]['author'] = abbreviate_name($post["realname"]);
+			$timeline_array[md5('post-' . $post['id'])]['type'] = 'post';
+		}
+
+		foreach($events as $event)
+		{
+			$timeline_array[md5('event-' . $event['id'])]['id'] = md5('event-' . $event['id']);
+			$timeline_array[md5('event-' . $event['id'])]['body'] = $event["message"];
+			$timeline_array[md5('event-' . $event['id'])]['created'] = $event["created"];
+			$timeline_array[md5('event-' . $event['id'])]['author'] = abbreviate_name($event["realname"]);
+			$timeline_array[md5('event-' . $event['id'])]['type'] = 'event';
 		}
 
 		foreach($files as $file)
@@ -137,6 +164,7 @@
 			$timeline_array[md5('file-' . $file['id'])]['body'] = $body;
 			$timeline_array[md5('file-' . $file['id'])]['created'] = $file["created"];
 			$timeline_array[md5('file-' . $file['id'])]['author'] = abbreviate_name($file["realname"]);
+			$timeline_array[md5('file-' . $file['id'])]['type'] = 'file';
 		}
 		
 		usort($timeline_array, 'sort_timeline');

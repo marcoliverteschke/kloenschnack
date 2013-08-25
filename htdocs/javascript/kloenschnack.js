@@ -17,6 +17,8 @@ $(function(){
 
 	post_template_source = $('#post-template').html();
 	post_template = Handlebars.compile(post_template_source);
+	event_template_source = $('#event-template').html();
+	event_template = Handlebars.compile(event_template_source);
 	users_list_entry_template_source = $('#active-users-list-entry-template').html();
 	users_list_entry_template = Handlebars.compile(users_list_entry_template_source);
 	
@@ -94,7 +96,14 @@ function refresh_timeline()
 				new_post.setAuthor(post.author);
 				new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
 				posts_in_timeline[new_post.getId()] = new_post;
-				var output = post_template(new_post.toJson());
+
+				var output = "";
+				if(post.type == 'event') {
+					output = event_template(new_post.toJson());
+				} else {
+					output = post_template(new_post.toJson());
+				}
+
 				if(output.length > 0)
 				{
 					$('.timeline').append(output);
