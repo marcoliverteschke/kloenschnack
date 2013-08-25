@@ -31,6 +31,8 @@
 * test file upload with a variety of files
 * implement user management functions
 * allow users to log-in from multiple locations?
+* events (login, logout)
+* API (for CVSBot)
 
 ### ToDone
 
