@@ -63,7 +63,7 @@
 				
 				$login_event = R::dispense('events');
 				$login_event->event = 'login';
-				$login_event->message = $user->realname . ' hat sich angemeldet';
+				$login_event->message = 'hat sich angemeldet';
 				$login_event->created = time();
 				$login_event->user_id = $user->id;
 				R::store($login_event);
@@ -97,7 +97,7 @@
 
 			$logout_event = R::dispense('events');
 			$logout_event->event = 'logout';
-			$logout_event->message = $current_user->realname . ' hat sich abgemeldet';
+			$logout_event->message = 'hat sich abgemeldet';
 			$logout_event->created = time();
 			$logout_event->user_id = $current_user->id;
 			R::store($logout_event);

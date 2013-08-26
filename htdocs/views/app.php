@@ -67,7 +67,7 @@
 		{{#if multiline}}<pre class="post">{{else}}<p class="post">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
 	</script>
 	<script id="event-template" type="text/x-handlebars-template">
-		<div class="event">{{{body}}} {{humanTime created}}</div>
+		<div class="event">{{author}} {{{body}}} {{humanTime created}}</div>
 	</script>
 	<script id="active-users-list-entry-template" type="text/x-handlebars-template">
 		<li>{{name}}</li>
