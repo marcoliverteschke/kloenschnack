@@ -20,8 +20,8 @@ $(function(){
 	post_template = Handlebars.compile(post_template_source);
 	event_template_source = $('#event-template').html();
 	event_template = Handlebars.compile(event_template_source);
-	users_list_entry_template_source = $('#active-users-list-entry-template').html();
-	users_list_entry_template = Handlebars.compile(users_list_entry_template_source);
+	list_entry_template_source = $('#list-entry-template').html();
+	list_entry_template = Handlebars.compile(list_entry_template_source);
 	
 	posts_queue = new PostsQueue;
 
@@ -124,6 +124,7 @@ function refresh_timeline()
 		$('.post').emoticonize({ 'animate': false });
 		refresh_users_list();
 		refresh_links_list();
+		refresh_files_list();
 	}, 'json');
 }
 
@@ -134,7 +135,7 @@ function refresh_users_list()
 	$.get('/user/active', function(data){
 		$('.users ul').empty();
 		_.each(data, function(user){
-			var output = users_list_entry_template(user);
+			var output = list_entry_template(user);
 			if(output.length > 0)
 			{
 				$('.users ul').append(output);
@@ -149,7 +150,27 @@ function refresh_links_list()
 	auth();
 	$('.drawer.links ul').empty();
 	$('.post a.urlified').each(function(i, e){
-		$(e).clone().wrap('<li></li>').appendTo('.drawer.links ul');
+		var link = {'name' : '<a href="' + $(e).html() + '" target="_blank">' + $(e).html() + '</a>'};
+		var output = list_entry_template(link);
+		if(output.length > 0)
+		{
+			$('.drawer.links ul').append(output);
+		}
+	});
+}
+
+
+function refresh_files_list()
+{
+	auth();
+	$('.drawer.files ul').empty();
+	$('.post a.file-namelink').each(function(i, e){
+		var link = {'name' : '<a href="' + $(e).html() + '" target="_blank">' + $(e).html() + '</a>'};
+		var output = list_entry_template(link);
+		if(output.length > 0)
+		{
+			$('.drawer.files ul').append(output);
+		}
 	});
 }
 

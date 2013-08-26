@@ -153,7 +153,7 @@
 		{
 			$timeline_array[md5('file-' . $file['id'])]['id'] = md5('file-' . $file['id']);
 			$link_to_file = '/assets/' . $file['alias'];
-			$body = '<a href="' . $link_to_file . '" target="_blank">' . $file["name"] . '</a>';
+			$body = '<a class="file-namelink" href="' . $link_to_file . '" target="_blank">' . $file["name"] . '</a>';
 			if(preg_match("/^image\//", $file['type']))
 			{
 				$body = '<a href="' . $link_to_file . '" target="_blank"><img class="preview" src="' . $link_to_file . '" /></a>' . $body;

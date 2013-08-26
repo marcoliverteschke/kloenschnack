@@ -26,10 +26,10 @@
 			<ul>
 			</ul>
 		</section>
-	<!--	<section class="drawer files">
+		<section class="drawer files">
 			<ul>
 			</ul>
-		</section>-->
+		</section>
 		<section class="drawer links">
 			<ul>
 			</ul>
@@ -79,8 +79,8 @@
 	<script id="event-template" type="text/x-handlebars-template">
 		<div class="event">{{author}} {{{body}}} {{humanTime created}}</div>
 	</script>
-	<script id="active-users-list-entry-template" type="text/x-handlebars-template">
-		<li>{{name}}</li>
+	<script id="list-entry-template" type="text/x-handlebars-template">
+		<li>{{{name}}}</li>
 	</script>
 </body>
 </html>
