@@ -21,9 +21,19 @@
 			</ul>
 		</section>
 	</section>
-	<section class="drawer users">
-		<ul>
-		</ul>
+	<section class="drawers">
+		<section class="drawer users">
+			<ul>
+			</ul>
+		</section>
+	<!--	<section class="drawer files">
+			<ul>
+			</ul>
+		</section>-->
+		<section class="drawer links">
+			<ul>
+			</ul>
+		</section>
 	</section>
 	<section class="timeline container"></section>
 	<section class="talkbox">

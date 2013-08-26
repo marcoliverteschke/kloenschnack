@@ -13,6 +13,7 @@ var refresh_timeline_millis = 2500;
 var process_queue_millis = 1000;
 var refresh_users_list_millis = 10000;
 
+
 $(function(){
 
 	post_template_source = $('#post-template').html();
@@ -122,6 +123,7 @@ function refresh_timeline()
 		});
 		$('.post').emoticonize({ 'animate': false });
 		refresh_users_list();
+		refresh_links_list();
 	}, 'json');
 }
 
@@ -139,6 +141,16 @@ function refresh_users_list()
 			}
 		});
 	}, 'json');
+}
+
+
+function refresh_links_list()
+{
+	auth();
+	$('.drawer.links ul').empty();
+	$('.post a.urlified').each(function(i, e){
+		$(e).clone().wrap('<li></li>').appendTo('.drawer.links ul');
+	});
 }
 
 
@@ -166,7 +178,7 @@ function urlify(text)
 	 */
     var urlRegex = /(https?:\/\/[^\s]+)/g; // viel zu ungenau, aber zum Testen reicht es allemal!
     return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
+        return '<a class="urlified" href="' + url + '">' + url + '</a>';
     });
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
