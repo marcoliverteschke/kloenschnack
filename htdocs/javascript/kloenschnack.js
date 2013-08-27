@@ -165,7 +165,7 @@ function refresh_files_list()
 	auth();
 	$('.drawer.files ul').empty();
 	$('.post a.file-namelink').each(function(i, e){
-		var link = {'name' : '<a href="' + $(e).html() + '" target="_blank">' + $(e).html() + '</a>'};
+		var link = {'name' : '<a href="' + $(e).attr('href') + '" target="_blank">' + $(e).html() + '</a>'};
 		var output = list_entry_template(link);
 		if(output.length > 0)
 		{
