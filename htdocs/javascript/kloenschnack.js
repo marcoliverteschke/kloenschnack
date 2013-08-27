@@ -149,7 +149,7 @@ function refresh_links_list()
 {
 	auth();
 	$('.drawer.links ul').empty();
-	$('.post a.urlified').each(function(i, e){
+	$('.post a.urlified').slice(-5).each(function(i, e){
 		var link = {'name' : '<a href="' + $(e).html() + '" target="_blank">' + $(e).html() + '</a>'};
 		var output = list_entry_template(link);
 		if(output.length > 0)
@@ -164,7 +164,7 @@ function refresh_files_list()
 {
 	auth();
 	$('.drawer.files ul').empty();
-	$('.post a.file-namelink').each(function(i, e){
+	$('.post a.file-namelink').slice(-5).each(function(i, e){
 		var link = {'name' : '<a href="' + $(e).attr('href') + '" target="_blank">' + $(e).html() + '</a>'};
 		var output = list_entry_template(link);
 		if(output.length > 0)
