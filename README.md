@@ -32,8 +32,6 @@
 * implement user management functions
 * allow users to log-in from multiple locations?
 * API (for CVSBot)
-* list 5 most recent files
-* list 5 most recent links
 
 ### ToDone
 
@@ -44,3 +42,5 @@
 * implement logout functionality
 * integrate link-detection
 * events (login, logout)
+* list 5 most recent files
+* list 5 most recent links

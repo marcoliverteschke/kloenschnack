@@ -128,7 +128,7 @@
 
 		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
 
-		$events = R::getAll("SELECT eventsDesc.id, eventsDesc.event, eventsDesc.message, eventsDesc.created, eventsDesc.user_id, users.realname FROM (SELECT * FROM events ORDER BY created DESC LIMIT 24) AS eventsDesc LEFT JOIN users ON eventsDesc.user_id = users.id ORDER BY created ASC");
+//		$events = R::getAll("SELECT eventsDesc.id, eventsDesc.event, eventsDesc.message, eventsDesc.created, eventsDesc.user_id, users.realname FROM (SELECT * FROM events ORDER BY created DESC LIMIT 24) AS eventsDesc LEFT JOIN users ON eventsDesc.user_id = users.id ORDER BY created ASC");
 
 		$timeline_array = array();
 		foreach($posts as $post)
@@ -140,14 +140,14 @@
 			$timeline_array[md5('post-' . $post['id'])]['type'] = 'post';
 		}
 
-		foreach($events as $event)
+/*		foreach($events as $event)
 		{
 			$timeline_array[md5('event-' . $event['id'])]['id'] = md5('event-' . $event['id']);
 			$timeline_array[md5('event-' . $event['id'])]['body'] = $event["message"];
 			$timeline_array[md5('event-' . $event['id'])]['created'] = $event["created"];
 			$timeline_array[md5('event-' . $event['id'])]['author'] = abbreviate_name($event["realname"]);
 			$timeline_array[md5('event-' . $event['id'])]['type'] = 'event';
-		}
+		}*/
 
 		foreach($files as $file)
 		{
