@@ -31,10 +31,10 @@
 * test file upload with a variety of files
 * implement user management functions
 * allow users to log-in from multiple locations?
-* API (for CVSBot)
 
 ### ToDone
 
+* API (for CVSBot)
 * conducted CSS facelift for tabs/drawers, input bar
 * added emoticons http://os.alfajango.com/css-emoticons/
 * updated LessPHP, Handlebars, jQuery, Underscore, Less Elements, RedBean

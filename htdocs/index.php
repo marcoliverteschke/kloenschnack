@@ -112,6 +112,48 @@
 		Flight::redirect('/login');
 	});
 
+	Flight::route('/api/post/create', function(){
+		
+		$request = Flight::request();
+		
+		if($request->type == 'application/json') {
+			$body = $request->body;
+			if(strlen($body) > 0) {
+				$body_object = json_decode($body);
+			
+				if(isset($body_object->user) && strlen($body_object->user) > 0) {
+					$user	=	R::findOne(
+						'users', 
+						'api_key = ?', 
+						array(
+							kloencrypt($body_object->user),
+						)
+					);
+								
+					if(!empty($user)) {
+						if(isset($body_object->message) && isset($body_object->message->body) && strlen($body_object->message->body) > 0) {
+							$post = R::dispense('posts');
+							$post->body = (string)$body_object->message->body;
+							$post->created = time();
+							$post->user_id = $user->id;
+							$id = R::store($post);
+						} else {
+							echo 'Message body cannot be empty.';
+						}
+					} else {
+						echo 'No corresponding user was found.';
+					}
+				} else {
+					echo 'User API key cannot be empty.';
+				}
+			} else {
+				echo 'Request body cannot be empty.';
+			}
+		} else {
+			echo 'Request has to be in JSON format.';
+		}
+	});
+
 	Flight::route('/post/create', function(){
 		update_activity_time();
 		$post = R::dispense('posts');
