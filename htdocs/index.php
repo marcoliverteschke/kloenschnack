@@ -14,6 +14,10 @@
 			R::setup('mysql:host=localhost; dbname=kloenschnack_dev','root','root');
 		}
 	});
+	
+	Flight::before('render', function(){
+		Flight::view()->set('page_title', 'kloenschnack — really simple team messaging');
+	});
 
 	Flight::route('/login', function(){
 		Flight::render('login.php');

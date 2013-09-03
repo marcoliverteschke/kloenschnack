@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>kloenschnack — really simple team messaging</title>
+	<title><?php print $page_title ?></title>
 	<meta name="description" content="kloenschnack — really simple team messaging">
 	<meta name="author" content="Marc-Oliver Teschke">
 	<meta name = "viewport" content = "initial-scale=1.0">
@@ -49,6 +49,7 @@
 			</form>
 		</section>
 	</section>
+	<script>var default_document_title = '<?php print $page_title ?>';</script>
 	<script src="/javascript/jquery.js"></script>
 	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js,jquery.cssemoticons.min.js"></script>
 	<script src="/min/?b=javascript/phpjs&f=date.js,get_html_translation_table.js,html_entity_decode.js,htmlentities.js,nl2br.js,trim.js"></script>

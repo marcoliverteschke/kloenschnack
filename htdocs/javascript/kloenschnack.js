@@ -6,7 +6,7 @@ var posts_in_timeline = new Array();
 
 var window_in_focus = true;
 var unread_posts = 0;
-var default_document_title = '';
+//var default_document_title = '';
 
 /* config parameters */
 var refresh_timeline_millis = 2500;
@@ -15,7 +15,6 @@ var refresh_users_list_millis = 10000;
 
 
 $(function(){
-
 	post_template_source = $('#post-template').html();
 	post_template = Handlebars.compile(post_template_source);
 	event_template_source = $('#event-template').html();
@@ -28,8 +27,6 @@ $(function(){
 	refresh_timeline();
 	window.setInterval(refresh_timeline, refresh_timeline_millis);
 	window.setInterval(refresh_users_list, refresh_users_list_millis);
-
-	default_document_title = $(document).find('title').text();
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
@@ -58,7 +55,9 @@ $(function(){
 	$(window).focus(function(){
 		window_in_focus = true;
 		unread_posts = 0;
-		window.fluid.dockBadge = '';
+		if(typeof window.fluid != "undefined") {
+			window.fluid.dockBadge = '';
+		}
 		$(document).find('title').text(default_document_title);
 	});
 
