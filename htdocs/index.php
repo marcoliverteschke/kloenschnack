@@ -165,12 +165,19 @@
 		$post->created = time();
 		$current_user = current_user();
 		$post->user_id = $current_user->id;
+		$all_users = R::getAll("SELECT users.id, users.realname FROM users ORDER BY users.realname ASC");
+		foreach($all_users as $user) {
+			if(preg_match("/^@$user[realname]:/", $post->body)) {
+				$post->at_user_id = $user['id'];
+			}
+		}
 		$id = R::store($post);
 	});
 
 	Flight::route('/post', function(){
 		update_activity_time();
-		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
+		$current_user = current_user();
+		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
 
 		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
 
@@ -184,6 +191,7 @@
 			$timeline_array[md5('post-' . $post['id'])]['created'] = $post["created"];
 			$timeline_array[md5('post-' . $post['id'])]['author'] = abbreviate_name($post["realname"]);
 			$timeline_array[md5('post-' . $post['id'])]['type'] = 'post';
+			$timeline_array[md5('post-' . $post['id'])]['at_me'] = ($post['at_user_id'] == $current_user->id);
 		}
 
 /*		foreach($events as $event)

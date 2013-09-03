@@ -23,6 +23,12 @@
 * FlightPHP
 * RedBean
 
+### Currently in the works
+
+Posts can be marked to be directed at a specific user-id. When said user's timeline is refreshed, the post appears highlighted.
+Display works. Step 2: detection of messages beginning with @username:, marking them with the corresponding user-id. Step 3: client-side detection "it seems you are composing an @-message, here's a list of users." to reduce the risk of false entries.
+Plus, usernames in the list of currently online users should be clickable for instant @-replies.
+
 ### ToDo
 
 * implement archive page

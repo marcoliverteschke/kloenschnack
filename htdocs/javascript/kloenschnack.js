@@ -95,6 +95,7 @@ function refresh_timeline()
 				new_post.setCreated(post.created);
 				new_post.setAuthor(post.author);
 				new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
+				new_post.setAtMe(post.at_me);
 				posts_in_timeline[new_post.getId()] = new_post;
 
 				var output = "";

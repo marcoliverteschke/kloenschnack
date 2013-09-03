@@ -74,8 +74,10 @@
 	-->
 	<script src="/min/?b=javascript&f=kloenschnack.js"></script>
 	<script id="post-template" type="text/x-handlebars-template">
-		<span class="person">{{author}} sagte {{humanTime created}} : </span>
-		{{#if multiline}}<pre class="post">{{else}}<p class="post">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
+		<article class="timeline-entry">
+			<span class="person">{{author}} sagte {{humanTime created}} : </span>
+			{{#if multiline}}<pre class="post {{#if at_me}}at_me{{/if}}">{{else}}<p class="post {{#if at_me}}at_me{{/if}}">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
+		</article>
 	</script>
 	<script id="event-template" type="text/x-handlebars-template">
 		<div class="event">{{author}} {{{body}}} {{humanTime created}}</div>
