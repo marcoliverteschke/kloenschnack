@@ -40,6 +40,10 @@ $(function(){
 		return false;
 	});
 	
+	$(document).on('click', '.users ul li', function(){
+		start_at_message($(this).text());
+	});
+	
 	$('.talkbox textarea').focus();
 
 	$('#fileupload').fileupload({
@@ -62,6 +66,11 @@ $(function(){
 	});
 
 });
+
+
+function start_at_message(at) {
+	$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val());
+}
 
 
 function do_post()
