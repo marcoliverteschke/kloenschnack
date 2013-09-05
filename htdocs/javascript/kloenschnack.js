@@ -69,7 +69,7 @@ $(function(){
 
 
 function start_at_message(at) {
-	$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val());
+	$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val()).focus();
 }
 
 
@@ -125,6 +125,15 @@ function refresh_timeline()
 						if(typeof window.fluid != "undefined")
 						{
 							window.fluid.dockBadge = unread_posts;
+							if(post.at_me) {
+								window.fluid.showGrowlNotification({
+								    title: post.author, 
+								    description: post.body, 
+								    priority: 1, 
+								    sticky: false,
+								    identifier: "foo"
+								});
+							}
 						}
 					}
 				}
