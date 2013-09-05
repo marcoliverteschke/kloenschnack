@@ -69,7 +69,10 @@ $(function(){
 
 
 function start_at_message(at) {
-	$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val()).focus();
+	if($('.talkbox textarea').val().search(/^@.+:/) == -1) {
+		$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val());
+	}
+	$('.talkbox textarea').focus();
 }
 
 
