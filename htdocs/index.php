@@ -177,14 +177,47 @@
 	Flight::route('/post', function(){
 		update_activity_time();
 		$current_user = current_user();
-		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
 
-		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
+//		$posts = R::getAll("SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, users.realname FROM (SELECT * FROM posts ORDER BY created DESC LIMIT 24) AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id ORDER BY created ASC");
+
+//		$files = R::getAll("SELECT filesDesc.id, filesDesc.name, filesDesc.type, filesDesc.size, filesDesc.created, filesDesc.alias, filesDesc.user_id, users.realname FROM (SELECT * FROM files ORDER BY created DESC LIMIT 24) AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created ASC");
 
 //		$events = R::getAll("SELECT eventsDesc.id, eventsDesc.event, eventsDesc.message, eventsDesc.created, eventsDesc.user_id, users.realname FROM (SELECT * FROM events ORDER BY created DESC LIMIT 24) AS eventsDesc LEFT JOIN users ON eventsDesc.user_id = users.id ORDER BY created ASC");
 
+		$entries = R::getAll("SELECT postsDesc.id, postsDesc.body, '' as filename, '' as filetype, '' as filesize, postsDesc.created, '' as filealias, postsDesc.user_id, postsDesc.at_user_id, users.realname, 'post' as type FROM posts AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id UNION SELECT filesDesc.id, '' as body, filesDesc.name as filename, filesDesc.type as filetype, filesDesc.size as filesize, filesDesc.created, filesDesc.alias as filealias, filesDesc.user_id, 0 as at_user_id, users.realname, 'file' as type FROM files AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created DESC LIMIT 50");
+
 		$timeline_array = array();
-		foreach($posts as $post)
+		
+		foreach($entries as $entry) {
+			if($entry['type'] == 'post') {
+
+				$timeline_array[md5('post-' . $entry['id'])]['id'] = md5('post-' . $entry['id']);
+				$timeline_array[md5('post-' . $entry['id'])]['body'] = $entry["body"];
+				$timeline_array[md5('post-' . $entry['id'])]['created'] = $entry["created"];
+				$timeline_array[md5('post-' . $entry['id'])]['author'] = abbreviate_name($entry["realname"]);
+				$timeline_array[md5('post-' . $entry['id'])]['type'] = 'post';
+				$timeline_array[md5('post-' . $entry['id'])]['at_me'] = ($entry['at_user_id'] == $current_user->id);
+
+			} else if($entry['type'] == 'file') {
+
+				$timeline_array[md5('file-' . $entry['id'])]['id'] = md5('file-' . $entry['id']);
+				$link_to_file = '/assets/' . $entry['filealias'];
+				$body = '<a class="file-namelink" href="' . $link_to_file . '" target="_blank">' . $entry["filename"] . '</a>';
+				if(preg_match("/^image\//", $entry['filetype']))
+				{
+					$body = '<a href="' . $link_to_file . '" target="_blank"><img class="preview" src="' . $link_to_file . '" /></a>' . $body;
+				} else {
+					$body = '<a href="' . $link_to_file . '" target="_blank"><img class="fileicon" src="' . get_file_icon($entry['filetype'], $entry['filename']) . '" /></a>' . $body;
+				}
+				$body = '<span class="file">' . $body . '</span>';
+				$timeline_array[md5('file-' . $entry['id'])]['body'] = $body;
+				$timeline_array[md5('file-' . $entry['id'])]['created'] = $entry["created"];
+				$timeline_array[md5('file-' . $entry['id'])]['author'] = abbreviate_name($entry["realname"]);
+				$timeline_array[md5('file-' . $entry['id'])]['type'] = 'file';
+			}
+		}
+		
+/*		foreach($posts as $post)
 		{
 			$timeline_array[md5('post-' . $post['id'])]['id'] = md5('post-' . $post['id']);
 			$timeline_array[md5('post-' . $post['id'])]['body'] = $post["body"];
@@ -192,7 +225,7 @@
 			$timeline_array[md5('post-' . $post['id'])]['author'] = abbreviate_name($post["realname"]);
 			$timeline_array[md5('post-' . $post['id'])]['type'] = 'post';
 			$timeline_array[md5('post-' . $post['id'])]['at_me'] = ($post['at_user_id'] == $current_user->id);
-		}
+		}*/
 
 /*		foreach($events as $event)
 		{
@@ -203,7 +236,7 @@
 			$timeline_array[md5('event-' . $event['id'])]['type'] = 'event';
 		}*/
 
-		foreach($files as $file)
+/*		foreach($files as $file)
 		{
 			$timeline_array[md5('file-' . $file['id'])]['id'] = md5('file-' . $file['id']);
 			$link_to_file = '/assets/' . $file['alias'];
@@ -219,7 +252,7 @@
 			$timeline_array[md5('file-' . $file['id'])]['created'] = $file["created"];
 			$timeline_array[md5('file-' . $file['id'])]['author'] = abbreviate_name($file["realname"]);
 			$timeline_array[md5('file-' . $file['id'])]['type'] = 'file';
-		}
+		}*/
 		
 		usort($timeline_array, 'sort_timeline');
 
