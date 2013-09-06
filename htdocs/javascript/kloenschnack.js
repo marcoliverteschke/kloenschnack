@@ -220,7 +220,7 @@ function urlify(text)
 	 */
     var urlRegex = /(https?:\/\/[^\s]+)/g; // viel zu ungenau, aber zum Testen reicht es allemal!
     return text.replace(urlRegex, function(url) {
-        return '<a class="urlified" href="' + url + '">' + url + '</a>';
+        return '<a class="urlified" href="' + url + '" target="_blank">' + url + '</a>';
     });
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
