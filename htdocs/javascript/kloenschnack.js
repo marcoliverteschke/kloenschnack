@@ -177,6 +177,11 @@ function refresh_links_list()
 		{
 			$('.drawer.links ul').append(output);
 		}
+		if($('.drawer.files ul li').length > 0) {
+			$('.drawer.files').show();
+		} else {
+			$('.drawer.files').hide();
+		}
 	});
 }
 
@@ -191,6 +196,11 @@ function refresh_files_list()
 		if(output.length > 0)
 		{
 			$('.drawer.files ul').append(output);
+		}
+		if($('.drawer.files ul li').length > 0) {
+			$('.drawer.files').show();
+		} else {
+			$('.drawer.files').hide();
 		}
 	});
 }
