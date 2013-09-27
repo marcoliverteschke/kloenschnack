@@ -166,11 +166,16 @@
 		$current_user = current_user();
 		$post->user_id = $current_user->id;
 		$all_users = R::getAll("SELECT users.id, users.realname FROM users ORDER BY users.realname ASC");
-		foreach($all_users as $user) {
-			if(preg_match("/^@$user[realname]:/", $post->body)) {
-				$post->at_user_id = $user['id'];
+		if(preg_match("/^@alle:/i", $post->body)) {
+			$post->at_user_id = -1;
+		} else {
+			foreach($all_users as $user) {
+				if(preg_match("/^@$user[realname]:/i", $post->body)) {
+					$post->at_user_id = $user['id'];
+				}
 			}
 		}
+		
 		$id = R::store($post);
 	});
 
@@ -196,7 +201,7 @@
 				$timeline_array[md5('post-' . $entry['id'])]['created'] = $entry["created"];
 				$timeline_array[md5('post-' . $entry['id'])]['author'] = abbreviate_name($entry["realname"]);
 				$timeline_array[md5('post-' . $entry['id'])]['type'] = 'post';
-				$timeline_array[md5('post-' . $entry['id'])]['at_me'] = ($entry['at_user_id'] == $current_user->id);
+				$timeline_array[md5('post-' . $entry['id'])]['at_me'] = ($entry['at_user_id'] == $current_user->id || (int)$entry['at_user_id'] === -1);
 
 			} else if($entry['type'] == 'file') {
 
