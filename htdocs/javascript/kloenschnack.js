@@ -177,10 +177,10 @@ function refresh_links_list()
 		{
 			$('.drawer.links ul').append(output);
 		}
-		if($('.drawer.files ul li').length > 0) {
-			$('.drawer.files').show();
+		if($('.drawer.links ul li').length > 0 && $('.drawer.users:visible').length > 0) {
+			$('.drawer.links').show();
 		} else {
-			$('.drawer.files').hide();
+			$('.drawer.links').hide();
 		}
 	});
 }
@@ -197,7 +197,7 @@ function refresh_files_list()
 		{
 			$('.drawer.files ul').append(output);
 		}
-		if($('.drawer.files ul li').length > 0) {
+		if($('.drawer.files ul li').length > 0 && $('.drawer.users:visible').length > 0) {
 			$('.drawer.files').show();
 		} else {
 			$('.drawer.files').hide();
