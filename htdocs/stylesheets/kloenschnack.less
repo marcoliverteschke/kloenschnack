@@ -7,6 +7,13 @@
 	box-sizing: border-box;
 }
 
+.inline-block() {
+	display:-moz-inline-stack;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+}
+
 @font-stack-serif: 'Georgia', 'Times', 'Times New Roman', 'serif';
 @font-stack-sans-serif: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'Geneva', 'Verdana', sans-serif;
 
@@ -67,7 +74,36 @@ pre {
 	margin: 1rem 0;
 }
 
+.drawer.stati {
+	li {
+		font-family: "FontAwesome";
+		.inline-block();
+		margin-right: .5em;
+		
+		a {
+			color: #000000;
+			text-decoration: none;
+		}
+	}
+}
 
+.users {
+	.status-on_the_phone {
+		&:before {
+			font-family: "FontAwesome";
+			content: "\f095";
+			margin-right: .5em;
+		}
+	}
+
+	.status-do_not_disturb {
+		&:before {
+			font-family: "FontAwesome";
+			content: "\f056";
+			margin-right: .5em;
+		}
+	}
+}
 
 .talkbox {
 	background-color: #eeeeee;

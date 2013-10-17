@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN current_status VARCHAR(32) NOT NULL DEFAULT 'available';

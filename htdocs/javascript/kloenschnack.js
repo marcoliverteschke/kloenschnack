@@ -64,6 +64,10 @@ $(function(){
 		}
 		$(document).find('title').text(default_document_title);
 	});
+	
+	$('.stati a').click(function(){
+		$.post('/user/status/update', {'status' : $(this).attr('data-status')});
+	});
 
 });
 

@@ -84,12 +84,29 @@
 	Flight::route('/user/active', function(){
 		$users = R::find('users', ' last_activity > ? ORDER BY realname ASC', array(time() - 600));
 		$users_array = array();
-		foreach($users as $user)
+		foreach($users as $key => $user)
 		{
-			$users_array[]['name'] = $user->realname;
+			$users_array[$key]['name'] = $user->realname;
+			$users_array[$key]['class'] = 'status-' . $user->current_status;
+			switch($user->current_status) {
+				case 'do_not_disturb':
+					$users_array[$key]['title'] = 'Voll beschäftigt.';
+				break;
+				case 'on_the_phone':
+					$users_array[$key]['title'] = 'An der Strippe.';
+				break;
+			}
 		}
 		Flight::view()->set('data', json_encode($users_array));
 		Flight::render('json.php');
+	});
+	
+	Flight::route('/user/status/update', function(){
+		$current_user = current_user();
+		if(!empty($current_user) && !empty(Flight::request()->data['status'])) {
+			$current_user->current_status = Flight::request()->data['status'];
+			R::store($current_user);
+		}		
 	});
 
 	Flight::route('/logout', function(){

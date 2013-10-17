@@ -26,6 +26,13 @@
 			<ul>
 			</ul>
 		</section>
+		<section class="drawer stati">
+			<ul>
+				<li><a href="javascript:void(0);" data-status="available" title="Verfügbar">&#xf00c;</a></li>
+				<li><a href="javascript:void(0);" data-status="do_not_disturb" title="Nicht stören">&#xf056;</a></li>
+				<li><a href="javascript:void(0);" data-status="on_the_phone" title="Am Telefon">&#xf095;</a></li>
+			</ul>
+		</section>
 		<section class="drawer files">
 			<ul>
 			</ul>
@@ -83,7 +90,7 @@
 		<div class="event">{{author}} {{{body}}} {{humanTime created}}</div>
 	</script>
 	<script id="list-entry-template" type="text/x-handlebars-template">
-		<li>{{{name}}}</li>
+		<li class="{{class}}" title="{{title}}">{{{name}}}</li>
 	</script>
 </body>
 </html>
