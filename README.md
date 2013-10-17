@@ -30,6 +30,7 @@ Step 3: client-side detection "it seems you are composing an @-message, here's a
 
 ### ToDo
 
+* implement status icon in users list (eg "on the phone", "do not disturb")
 * implement archive page
 * implement search function
 * add progress bar to uploader
