@@ -72,10 +72,28 @@ $(function(){
 });
 
 
+$.fn.selectRange = function(start, end) {
+    if(!end) end = start; 
+    return this.each(function() {
+        if (this.setSelectionRange) {
+            this.focus();
+            this.setSelectionRange(start, end);
+        } else if (this.createTextRange) {
+            var range = this.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    });
+};
+
+
 function start_at_message(at) {
 	if($('.talkbox textarea').val().search(/^@.+:/) == -1) {
 		$('.talkbox textarea').val('@' + at + ': ' + $('.talkbox textarea').val());
 	}
+	$('.talkbox textarea').selectRange($('.talkbox textarea').val().length);
 	$('.talkbox textarea').focus();
 }
 
