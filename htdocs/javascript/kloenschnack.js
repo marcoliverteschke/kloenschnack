@@ -165,10 +165,39 @@ function refresh_timeline()
 			}
 		});
 		$('.post').emoticonize({ 'animate': false });
+		refresh_previews();
 		refresh_users_list();
 		refresh_links_list();
 		refresh_files_list();
 	}, 'json');
+}
+
+
+function refresh_previews()
+{
+	$('.timeline a').not('.has-preview').each(function(i, e){
+		if($(e).attr('href').search(/youtube\.com/) !== -1 && $(e).find('img').length == 0) {
+			var url_query_split = $(e).attr('href').split('?');
+			if(typeof url_query_split[1] !== "undefined")
+			{
+				var url_params_split = url_query_split[1].split("&");
+				for(var i in url_params_split)
+				{
+					var param_split = url_params_split[i].split("=");
+					if(typeof param_split[0] !== 'undefined' && param_split[0] == "v" && typeof param_split[1] !== "undefined")
+					{
+						$(e).after('<br><br><a href="' + $(e).attr('href') + '"><img src="http://img.youtube.com/vi/' + param_split[1] + '/mqdefault.jpg" /></a>');
+						$(e).addClass('has-preview');
+					}
+				}
+			}
+		}
+
+/*		if($(e).attr('href').search(/soundcloud\.com/) !== -1 && $(e).find('img').length == 0) {
+			$(e).after('<br><br><iframe src="http://player.soundcloud.com/player.swf?' + encodeURI($(e).attr('href')) + '"></iframe>');
+			$(e).addClass('has-preview');
+		}*/
+	});
 }
 
 
