@@ -10,7 +10,7 @@ var unread_posts = 0;
 
 /* config parameters */
 var refresh_timeline_millis = 2500;
-var process_queue_millis = 100;
+var process_queue_millis = 1000;
 var refresh_users_list_millis = 10000;
 
 
