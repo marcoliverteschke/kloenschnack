@@ -125,7 +125,6 @@ function refresh_timeline()
 		_.each(data, function(post){
 			add_post_to_timeline(post);
 		});
-		$('.post').emoticonize({ 'animate': false });
 		refresh_previews();
 		refresh_users_list();
 		refresh_links_list();
@@ -156,6 +155,7 @@ function add_post_to_timeline(post) {
 		if(output.length > 0)
 		{
 			$('.timeline').append(output);
+			$('.post').emoticonize({ 'animate': false });
 			scroll_to_bottom();
 			if(!window_in_focus)
 			{
