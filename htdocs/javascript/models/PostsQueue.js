@@ -51,7 +51,7 @@ function PostsQueue()
 		{
 			var send_to_server = _this.getPosts()[0];
 			_this.setCommunicatingWithServer(true);
-			$.post('/post/create', { body : send_to_server.body }, function(data){
+			$.post('/post/create', { body : send_to_server.body, created : send_to_server.created }, function(data){
 				_this.shiftFirstPostFromQueue();
 				_this.setCommunicatingWithServer(false);
 			});

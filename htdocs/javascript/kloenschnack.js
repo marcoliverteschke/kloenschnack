@@ -2,11 +2,10 @@ var post_template_source = null;
 var post_template = null;
 
 var posts_queue = null;
-var posts_in_timeline = new Array();
+var posts_in_timeline = new Object();
 
 var window_in_focus = true;
 var unread_posts = 0;
-//var default_document_title = '';
 
 /* config parameters */
 var refresh_timeline_millis = 2500;
@@ -105,6 +104,9 @@ function do_post()
 	if(trim($('.talkbox textarea').val()).length > 0)
 	{
 		new_post.body = nl2br(htmlentities(trim($('.talkbox textarea').val())));
+		new_post.created = parseInt((new Date().getTime()) / 1000);
+		new_post.guid = MD5(user_id + '-' + new_post.created);
+		add_post_to_timeline(new_post);
 		posts_queue.pushPostToQueue(new_post);
 		if(posts_queue.isProcessing() == false)
 		{
@@ -121,48 +123,7 @@ function refresh_timeline()
 	auth();
 	$.get('/post', function(data){
 		_.each(data, function(post){
-			if(typeof posts_in_timeline[post.id] == "undefined")
-			{
-				var new_post = new Post;
-				new_post.setId(post.id);
-				new_post.setBody(urlify(post.body));
-				new_post.setCreated(post.created);
-				new_post.setAuthor(post.author);
-				new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
-				new_post.setAtMe(post.at_me);
-				posts_in_timeline[new_post.getId()] = new_post;
-
-				var output = "";
-				if(post.type == 'event') {
-					output = event_template(new_post.toJson());
-				} else {
-					output = post_template(new_post.toJson());
-				}
-
-				if(output.length > 0)
-				{
-					$('.timeline').append(output);
-					scroll_to_bottom();
-					if(!window_in_focus)
-					{
-						unread_posts++;
-						$(document).find('title').text('(' + unread_posts + ') ' + default_document_title);
-						if(typeof window.fluid != "undefined")
-						{
-							window.fluid.dockBadge = unread_posts;
-							if(post.at_me) {
-								window.fluid.showGrowlNotification({
-								    title: post.author, 
-								    description: post.body, 
-								    priority: 1, 
-								    sticky: false,
-								    identifier: "foo"
-								});
-							}
-						}
-					}
-				}
-			}
+			add_post_to_timeline(post);
 		});
 		$('.post').emoticonize({ 'animate': false });
 		refresh_previews();
@@ -170,6 +131,52 @@ function refresh_timeline()
 		refresh_links_list();
 		refresh_files_list();
 	}, 'json');
+}
+
+
+function add_post_to_timeline(post) {
+	if(typeof posts_in_timeline[post.guid] == "undefined")
+	{
+		var new_post = new Post;
+		new_post.setBody(urlify(post.body));
+		new_post.setCreated(post.created);
+		new_post.setAuthor(post.author);
+		new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
+		new_post.setAtMe(post.at_me);
+		new_post.setGuid(post.guid);
+		posts_in_timeline[new_post.getGuid()] = new_post;
+
+		var output = "";
+		if(post.type == 'event') {
+			output = event_template(new_post.toJson());
+		} else {
+			output = post_template(new_post.toJson());
+		}
+
+		if(output.length > 0)
+		{
+			$('.timeline').append(output);
+			scroll_to_bottom();
+			if(!window_in_focus)
+			{
+				unread_posts++;
+				$(document).find('title').text('(' + unread_posts + ') ' + default_document_title);
+				if(typeof window.fluid != "undefined")
+				{
+					window.fluid.dockBadge = unread_posts;
+					if(post.at_me) {
+						window.fluid.showGrowlNotification({
+						    title: post.author, 
+						    description: post.body, 
+						    priority: 1, 
+						    sticky: false,
+						    identifier: "foo"
+						});
+					}
+				}
+			}
+		}
+	}	
 }
 
 
@@ -192,11 +199,6 @@ function refresh_previews()
 				}
 			}
 		}
-
-/*		if($(e).attr('href').search(/soundcloud\.com/) !== -1 && $(e).find('img').length == 0) {
-			$(e).after('<br><br><iframe src="http://player.soundcloud.com/player.swf?' + encodeURI($(e).attr('href')) + '"></iframe>');
-			$(e).addClass('has-preview');
-		}*/
 	});
 }
 
@@ -283,8 +285,6 @@ function urlify(text)
     return text.replace(urlRegex, function(url) {
         return '<a class="urlified" href="' + url + '" target="_blank">' + url + '</a>';
     });
-    // or alternatively
-    // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
 
@@ -294,4 +294,8 @@ function urlify(text)
  
 Handlebars.registerHelper('humanTime', function(timestamp){
 	return 'am ' +  date("d.m.Y", timestamp) + ' um ' + date("H:i", timestamp) + ' Uhr';
+});
+
+Handlebars.registerHelper('humanTimeShorter', function(timestamp){
+	return date("d.m.Y", timestamp) + ' um ' + date("H:i", timestamp) + ' Uhr';
 });

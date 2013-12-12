@@ -7,6 +7,7 @@ function Post ()
 	this.author = "";
 	this.type = "post";
 	this.at_me = false;
+	this.guid = "";
 	
 	
 	this.setId = function(newId)
@@ -78,7 +79,16 @@ function Post ()
 	{
 		return this.at_me;
 	};
+
+	this.setGuid = function(newGuid)
+	{
+		this.guid = newGuid;
+	}
 	
+	this.getGuid = function()
+	{
+		return this.guid;
+	};	
 
 
 	this.toJson = function()
@@ -91,6 +101,7 @@ function Post ()
 		returnValue.at_me = this.isAtMe();
 		returnValue.author = this.getAuthor();
 		returnValue.type = this.getType();
+		returnValue.guid = this.getGuid();
 		return returnValue;
 	}
 }

@@ -57,8 +57,9 @@
 		</section>
 	</section>
 	<script>var default_document_title = '<?php print $page_title ?>';</script>
+	<script>var user_id = '<?php print $user_id ?>';</script>
 	<script src="/javascript/jquery.js"></script>
-	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js,jquery.cssemoticons.min.js"></script>
+	<script src="/min/?b=javascript&f=handlebars.js,underscore.js,modernizr.js,jquery.cookies.2.2.0.min.js,jquery.cssemoticons.min.js,md5.js"></script>
 	<script src="/min/?b=javascript/phpjs&f=date.js,get_html_translation_table.js,html_entity_decode.js,htmlentities.js,nl2br.js,trim.js"></script>
 	<script src="/min/?b=javascript/models&f=Post.js,PostsQueue.js"></script>
 	<script src="/min/?b=javascript/fileupload&f=vendor/jquery.ui.widget.js,jquery.iframe-transport.js,jquery.fileupload.js"></script>
@@ -66,7 +67,9 @@
 	<script src="/javascript/handlebars.js"></script>
 	<script src="/javascript/underscore.js"></script>
 	<script src="/javascript/modernizr.js"></script>
+	<script src="/javascript/jquery.cssemoticons.min.js"></script>
 	<script src="/javascript/jquery.cookies.2.2.0.min.js"></script>
+	<script src="/javascript/md5.js"></script>
 	<script src="/javascript/phpjs/date.js"></script>
 	<script src="/javascript/phpjs/get_html_translation_table.js"></script>
 	<script src="/javascript/phpjs/html_entity_decode.js"></script>
@@ -77,12 +80,12 @@
 	<script src="/javascript/models/PostsQueue.js"></script>
 	<script src="/javascript/fileupload/vendor/jquery.ui.widget.js"></script>
 	<script src="/javascript/fileupload/jquery.iframe-transport.js"></script>
-	<script src="/javascript/fileupload/jquery.fileupload.js"></script>
-	-->
+	<script src="/javascript/fileupload/jquery.fileupload.js"></script>-->
+	
 	<script src="/min/?b=javascript&f=kloenschnack.js"></script>
 	<script id="post-template" type="text/x-handlebars-template">
 		<article class="timeline-entry">
-			<span class="person">{{author}} sagte {{humanTime created}}: </span>
+			<span class="person">{{#if author}}{{author}} sagte {{humanTime created}}{{else}}{{humanTimeShorter created}}{{/if}}: </span>
 			{{#if multiline}}<pre class="post {{#if at_me}}at_me{{/if}}">{{else}}<p class="post {{#if at_me}}at_me{{/if}}">{{/if}}{{{body}}}{{#if multiline}}</pre>{{else}}</p>{{/if}}
 		</article>
 	</script>

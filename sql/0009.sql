@@ -1,0 +1,2 @@
+CREATE OR REPLACE VIEW postsunique AS SELECT p.*, MD5(CONCAT(p.user_id, '-', p.created)) AS guid FROM posts p;
+CREATE OR REPLACE VIEW filesunique AS SELECT f.*, MD5(CONCAT(f.user_id, '-', f.created)) AS guid FROM files f;
