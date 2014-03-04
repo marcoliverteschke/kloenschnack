@@ -64,6 +64,21 @@ pre {
 		display: inline-block;
 		margin-right: .5em;
 	}
+	
+	&.aged {
+		.preview {
+			max-width: 25%;
+			
+			&:hover {
+				-webkit-transition: max-width 1s;
+				-moz-transition: max-width 1s;
+				-o-transition: max-width 1s;
+				transition: max-width 1s;
+
+				max-width: 100%;
+			}
+		}
+	}
 }
 
 .event {

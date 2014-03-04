@@ -50,12 +50,13 @@
 	Flight::route('/user', function(){
 		if(Flight::request()->method == "POST")
 		{
+			error_log(kloencrypt(Flight::request()->data['user']['password']));
 			$user	=	R::findOne(
 							'users', 
-							'name = ?'/* AND password = ?'*/,
+							'name = ? AND password = ?',
 							array(
-								Flight::request()->data['user']['name']/*, 
-								kloencrypt(Flight::request()->data['user']['password'])*/));
+								Flight::request()->data['user']['name'], 
+								kloencrypt(Flight::request()->data['user']['password'])));
 			if($user)
 			{
 				$now = time();
@@ -143,7 +144,7 @@
 			$body = $request->body;
 			if(strlen($body) > 0) {
 				$body_object = json_decode($body);
-			
+				
 				if(isset($body_object->user) && strlen($body_object->user) > 0) {
 					$user	=	R::findOne(
 						'users', 

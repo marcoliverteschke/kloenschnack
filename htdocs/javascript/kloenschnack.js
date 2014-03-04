@@ -11,6 +11,8 @@ var unread_posts = 0;
 var refresh_timeline_millis = 2500;
 var process_queue_millis = 1000;
 var refresh_users_list_millis = 10000;
+var previews_aging_millis = 1000;
+var previews_age_to_shrink = 300000;
 
 
 $(function(){
@@ -26,6 +28,7 @@ $(function(){
 	refresh_timeline();
 	window.setInterval(refresh_timeline, refresh_timeline_millis);
 	window.setInterval(refresh_users_list, refresh_users_list_millis);
+	window.setInterval(age_preview_images, previews_aging_millis);
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
@@ -130,6 +133,27 @@ function refresh_timeline()
 		refresh_links_list();
 		refresh_files_list();
 	}, 'json');
+}
+
+
+function age_preview_images()
+{
+	var now = Date.now();
+	$('.preview').each(function(i, e){
+		if(!$(e).parents('.file').hasClass("aged"))
+		{
+			var created_ts = $(e).parents('.timeline-entry').attr('data-created');
+			if(typeof created_ts != "undefined")
+			{
+				var created_millis = created_ts * 1000;
+				
+				if((now - created_millis) > previews_age_to_shrink)
+				{
+					$(e).parents('.file').addClass("aged");
+				}
+			}
+		}
+	});
 }
 
 
