@@ -66,6 +66,23 @@ pre {
 	}
 	
 	&.aged {
+		position: relative;
+		
+		&:after {
+			content: "\f002";
+			color: rgba(255, 255, 255, .8);
+			font-family: "FontAwesome";
+			font-size: 5em;
+			left: 10%;
+			top: 20%;
+			position: absolute;
+			text-shadow: 0 0 4px rgba(0, 0, 0, .25);
+		}
+		
+		&:hover:after {
+			content: "";
+		}
+
 		.preview {
 			max-width: 25%;
 			
