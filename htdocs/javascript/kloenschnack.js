@@ -189,18 +189,67 @@ function add_post_to_timeline(post) {
 				{
 					window.fluid.dockBadge = unread_posts;
 					if(post.at_me) {
-						window.fluid.showGrowlNotification({
-						    title: post.author, 
-						    description: post.body, 
-						    priority: 1, 
-						    sticky: false,
-						    identifier: "foo"
-						});
+						notify(post.author, post.body, 1, false, "foo");
 					}
 				}
 			}
 		}
 	}	
+}
+
+
+function notify(title, description, priority, sticky, identifier)
+{
+	if(typeof window.fluid != "undefined")
+	{
+		window.fluid.showGrowlNotification({
+			title: title, 
+			description: description, 
+			priority: priority, 
+			sticky: sticky,
+			identifier: identifier
+		});
+	}
+	
+	
+/*	if (!("Notification" in window)) {
+		// check for Fluid/Growl integration, otherwise do nothing
+		if(typeof window.fluid != "undefined")
+		{
+			window.fluid.showGrowlNotification({
+				title: title, 
+				description: description, 
+				priority: priority, 
+				sticky: sticky,
+				identifier: identifier
+			});
+		}
+	} else if (Notification.permission === "granted") {
+		// Let's check if the user is okay to get some notification
+		// If it's okay let's create a notification
+		var notification = new Notification(title, {
+			body: description
+		});
+		notification.show();
+	} else if (Notification.permission !== 'denied') {
+		// Otherwise, we need to ask the user for permission
+		// Note, Chrome does not implement the permission static property
+		// So we have to check for NOT 'denied' instead of 'default'
+		Notification.requestPermission(function (permission) {
+			// Whatever the user answers, we make sure we store the information
+			if(!('permission' in Notification)) {
+				Notification.permission = permission;
+			}
+
+			// If the user is okay, let's create a notification
+			if (permission === "granted") {
+				var notification = new Notification(title, {
+					body: description
+				});
+				notification.show();
+			}
+		});
+	}*/
 }
 
 
