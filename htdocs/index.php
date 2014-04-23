@@ -279,12 +279,38 @@
 		// display posts
 	});
 
+	Flight::route('/settings', function(){
+		$errors = array();
+		$messages = array();
+		if(Flight::request()->method == "POST")
+		{
+			if(strlen(Flight::request()->data['user']['new_password']) < 8)
+			{
+				$errors[] = 'Das neue Passwort muss mindestens 8 Zeichen lang sein.';
+			}
+			if(Flight::request()->data['user']['new_password'] != Flight::request()->data['user']['new_password_confirm'])
+			{
+				$errors[] = 'Das neue Passwort und die Passwortbestätigung stimmen nicht überein.';
+			}
+			if(count($errors) == 0)
+			{
+				$current_user = current_user();
+				$current_user->password = kloencrypt(Flight::request()->data['user']['new_password']);
+				R::store($current_user);
+				$messages[] = 'Passwort geändert.';
+			}
+		}
+		Flight::render('settings.php', array('errors' => $errors, 'messages' => $messages), 'body_content');
+		Flight::render('layout_logged_in.php');
+	});
+
 	Flight::route('/', function(){
 		if(!isset($_COOKIE['kloenschnack_session']) || !preg_match("/^[0-9]{3}\-[0-9]+\-[0-9]+$/", $_COOKIE['kloenschnack_session']))
 		{
 			Flight::redirect('/login');
 		}
-		Flight::render('app.php');
+		Flight::render('app.php', array(), 'body_content');
+		Flight::render('layout_logged_in.php');
 	});
 
 	Flight::start();
