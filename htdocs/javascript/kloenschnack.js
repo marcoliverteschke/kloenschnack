@@ -25,10 +25,13 @@ $(function(){
 	
 	posts_queue = new PostsQueue;
 
-	refresh_timeline();
-	window.setInterval(refresh_timeline, refresh_timeline_millis);
-	window.setInterval(refresh_users_list, refresh_users_list_millis);
-	window.setInterval(age_preview_images, previews_aging_millis);
+	if($('.timeline').length > 0)
+	{
+		refresh_timeline();
+		window.setInterval(refresh_timeline, refresh_timeline_millis);
+		window.setInterval(refresh_users_list, refresh_users_list_millis);
+		window.setInterval(age_preview_images, previews_aging_millis);
+	}
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
@@ -70,6 +73,11 @@ $(function(){
 	$('.stati a').click(function(){
 		$.post('/user/status/update', {'status' : $(this).attr('data-status')});
 	});
+	
+	if(typeof hits != 'undefined' && hits.length > 0)
+	{
+		add_posts_to_timeline(hits, '#hits');
+	}
 
 });
 
@@ -109,7 +117,7 @@ function do_post()
 		new_post.body = nl2br(htmlentities(trim($('.talkbox textarea').val())));
 		new_post.created = parseInt((new Date().getTime()) / 1000);
 		new_post.guid = MD5(user_id + '-' + new_post.created);
-		add_post_to_timeline(new_post);
+		add_post_to_timeline(new_post, '.timeline');
 		posts_queue.pushPostToQueue(new_post);
 		if(posts_queue.isProcessing() == false)
 		{
@@ -126,7 +134,7 @@ function refresh_timeline()
 	auth();
 	$.get('/post', function(data){
 		_.each(data, function(post){
-			add_post_to_timeline(post);
+			add_post_to_timeline(post, '.timeline');
 		});
 		refresh_previews();
 		refresh_users_list();
@@ -157,7 +165,36 @@ function age_preview_images()
 }
 
 
-function add_post_to_timeline(post) {
+function add_posts_to_timeline(posts, timeline_identifier)
+{
+	var output = "";
+	for(post_key in posts)
+	{
+		var post = posts[post_key];
+		var new_post = new Post;
+		new_post.setBody(urlify(post.body));
+		new_post.setCreated(post.created);
+		new_post.setAuthor(post.author);
+		new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
+		new_post.setAtMe(post.at_me);
+		new_post.setGuid(post.guid);
+
+		if(post.type == 'event') {
+			output += event_template(new_post.toJson());
+		} else {
+			output += post_template(new_post.toJson());
+		}
+	}
+
+	if(output.length > 0)
+	{
+		$(timeline_identifier).append(output);
+		$('.post').emoticonize({ 'animate': false });
+	}
+}
+
+
+function add_post_to_timeline(post, timeline_identifier) {
 	if(typeof posts_in_timeline[post.guid] == "undefined")
 	{
 		var new_post = new Post;
@@ -178,7 +215,7 @@ function add_post_to_timeline(post) {
 
 		if(output.length > 0)
 		{
-			$('.timeline').append(output);
+			$(timeline_identifier).append(output);
 			$('.post').emoticonize({ 'animate': false });
 			scroll_to_bottom();
 			if(!window_in_focus)

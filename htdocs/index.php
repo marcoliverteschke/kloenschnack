@@ -56,7 +56,9 @@
 							'name = ? AND password = ?',
 							array(
 								Flight::request()->data['user']['name'], 
-								kloencrypt(Flight::request()->data['user']['password'])));
+								kloencrypt(Flight::request()->data['user']['password'])
+							)
+						);
 			if($user)
 			{
 				$now = time();
@@ -273,10 +275,41 @@
 	});
 
 	Flight::route('/archive', function(){
+		$errors = array();
+		$messages = array();
+		$hits = array();
+		$search = '';
+		
+		if(isset(Flight::request()->query['search']) && strlen(trim(Flight::request()->query['search'])) > 0)
+		{
+			$search = Flight::request()->query['search'];
+			$hits = R::getAll(
+				"SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, postsDesc.guid, users.realname, 'post' as type FROM postsunique AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id WHERE postsDesc.body LIKE :search ORDER BY created DESC", 
+				array(
+					':search' => sprintf('%%%s%%', $search)
+				)
+			);
+			if(is_array($hits) && count($hits) > 0)
+			{
+				foreach($hits as $key => &$hit)
+				{
+					$hit['body'] = preg_replace(sprintf("/%s/i", $search), sprintf('<span class="match">%s</span>', $search), $hit['body']);
+					$hit['author'] = abbreviate_name($hit["realname"]);
+					$hit['at_me'] = (int)$hit['at_user_id'] == $current_user->id;
+				}
+				
+				$hits = json_encode($hits);
+			}
+		}
+		
 		// get distinct days with activity
 		// SELECT DATE(FROM_UNIXTIME(created)) AS date FROM posts UNION SELECT DATE(FROM_UNIXTIME(created)) as date FROM files ORDER BY date ASC;
 		// get posts for last day or day from parameter
 		// display posts
+		$search = mb_convert_encoding($search, 'UTF-8', 'UTF-8');
+		$search = htmlentities($search, ENT_QUOTES, 'UTF-8');
+		Flight::render('archive.php', array('errors' => $errors, 'messages' => $messages, 'hits' => $hits, 'search' => $search), 'body_content');
+		Flight::render('layout_logged_in.php');
 	});
 
 	Flight::route('/settings', function(){
