@@ -172,7 +172,7 @@ function add_posts_to_timeline(posts, timeline_identifier)
 	{
 		var post = posts[post_key];
 		var new_post = new Post;
-		new_post.setBody(urlify(post.body));
+		new_post.setBody(hashtagify(urlify(post.body)));
 		new_post.setCreated(post.created);
 		new_post.setAuthor(post.author);
 		new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
@@ -198,7 +198,7 @@ function add_post_to_timeline(post, timeline_identifier) {
 	if(typeof posts_in_timeline[post.guid] == "undefined")
 	{
 		var new_post = new Post;
-		new_post.setBody(urlify(post.body));
+		new_post.setBody(hashtagify(urlify(post.body)));
 		new_post.setCreated(post.created);
 		new_post.setAuthor(post.author);
 		new_post.setMultiline(new_post.getBody().search(/\r\n|\r|\n/) != -1);
@@ -395,6 +395,32 @@ function urlify(text)
     return text.replace(urlRegex, function(url) {
         return '<a class="urlified" href="' + url + '" target="_blank">' + url + '</a>';
     });
+}
+
+
+function hashtagify(text)
+{
+	/*
+	 * via http://stackoverflow.com/questions/1500260/detect-urls-in-text-with-javascript
+	 */
+    var hashtagRegex = /(^|\s)+(#([a-zA-Z0-9_äöüÄÖÜß]+|\b))/g; // selektiert im Moment den Whitespace mit, muss noch besser werden!
+//	console.log(text.match(hashtagRegex));
+    return text.replace(hashtagRegex, function(hashtag) {
+        return '<a class="hashtagified" href="/archive?search=' + encodeURIComponent(trim11(hashtag)) + '">' + hashtag + '</a>';
+    });
+	return text;
+}
+
+
+function trim11 (str) {
+    str = str.replace(/^\s+/, '');
+    for (var i = str.length - 1; i >= 0; i--) {
+        if (/\S/.test(str.charAt(i))) {
+            str = str.substring(0, i + 1);
+            break;
+        }
+    }
+    return str;
 }
 
 
