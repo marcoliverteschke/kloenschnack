@@ -51,21 +51,21 @@
 		if(Flight::request()->method == "POST")
 		{
 //			error_log(kloencrypt(Flight::request()->data['user']['password']));
-/*			$user	=	R::findOne(
+			$user	=	R::findOne(
 							'users', 
 							'name = ? AND password = ?',
 							array(
 								Flight::request()->data['user']['name'], 
 								kloencrypt(Flight::request()->data['user']['password'])
 							)
-						);*/
-			$user	=	R::findOne(
+						);
+/*			$user	=	R::findOne(
 							'users', 
 							'name = ?',
 							array(
 								Flight::request()->data['user']['name']
 							)
-						);
+						);*/
 			if($user)
 			{
 				$now = time();

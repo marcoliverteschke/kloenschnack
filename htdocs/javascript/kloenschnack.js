@@ -403,10 +403,11 @@ function hashtagify(text)
 	/*
 	 * via http://stackoverflow.com/questions/1500260/detect-urls-in-text-with-javascript
 	 */
-    var hashtagRegex = /(^|\s)+(#([a-zA-Z0-9_äöüÄÖÜß]+|\b))/g; // selektiert im Moment den Whitespace mit, muss noch besser werden!
+//    var hashtagRegex = /(^|\s)+(#([a-zA-Z0-9_äöüÄÖÜß]+|\b))/g; // selektiert im Moment den Whitespace mit, muss noch besser werden!
+    var hashtagRegex = /(^|[^\S])(#([a-zA-Z0-9_äöüÄÖÜß]+|\b))([^\S]|$)/g; // selektiert im Moment den Whitespace mit, muss noch besser werden!
 //	console.log(text.match(hashtagRegex));
     return text.replace(hashtagRegex, function(hashtag) {
-        return '<a class="hashtagified" href="/archive?search=' + encodeURIComponent(trim11(hashtag)) + '">' + hashtag + '</a>';
+        return ' <a class="hashtagified" href="/archive?search=' + encodeURIComponent(trim11(hashtag)) + '">' + trim11(hashtag) + '</a> ';
     });
 	return text;
 }
