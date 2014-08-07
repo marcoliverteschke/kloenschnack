@@ -389,9 +389,9 @@ function auth()
 function urlify(text)
 {
 	/*
-	 * via http://stackoverflow.com/questions/1500260/detect-urls-in-text-with-javascript
+	 * via http://stackoverflow.com/questions/8188645/javascript-regex-to-match-a-url-in-a-field-of-text
 	 */
-    var urlRegex = /(https?:\/\/[^\s]+)/g; // viel zu ungenau, aber zum Testen reicht es allemal!
+	var urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/g;
     return text.replace(urlRegex, function(url) {
         return '<a class="urlified" href="' + url + '" target="_blank">' + url + '</a>';
     });
