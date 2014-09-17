@@ -222,12 +222,12 @@ function add_post_to_timeline(post, timeline_identifier) {
 			{
 				unread_posts++;
 				$(document).find('title').text('(' + unread_posts + ') ' + default_document_title);
+				if(post.at_me) {
+					notify(post.author, post.body, 1, false, "foo");
+				}
 				if(typeof window.fluid != "undefined")
 				{
 					window.fluid.dockBadge = unread_posts;
-					if(post.at_me) {
-						notify(post.author, post.body, 1, false, "foo");
-					}
 				}
 			}
 		}
@@ -237,6 +237,13 @@ function add_post_to_timeline(post, timeline_identifier) {
 
 function notify(title, description, priority, sticky, identifier)
 {
+	if(typeof Audio != "undefined") {
+		var blip = new Audio("/sounds/blip.wav");
+		if(typeof blip.play != "undefined") {
+			blip.play();
+		}
+	}
+	
 	if(typeof window.fluid != "undefined")
 	{
 		window.fluid.showGrowlNotification({
