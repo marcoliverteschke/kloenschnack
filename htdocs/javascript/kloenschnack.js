@@ -13,6 +13,7 @@ var process_queue_millis = 1000;
 var refresh_users_list_millis = 10000;
 var previews_aging_millis = 1000;
 var previews_age_to_shrink = 300000;
+var refresh_viewed_millis = 10000;
 
 
 $(function(){
@@ -28,9 +29,11 @@ $(function(){
 	if($('.timeline').length > 0)
 	{
 		refresh_timeline();
+		refresh_viewed();
 		window.setInterval(refresh_timeline, refresh_timeline_millis);
 		window.setInterval(refresh_users_list, refresh_users_list_millis);
 		window.setInterval(age_preview_images, previews_aging_millis);
+		window.setInterval(refresh_viewed, refresh_viewed_millis);
 	}
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
@@ -68,6 +71,12 @@ $(function(){
 			window.fluid.dockBadge = '';
 		}
 		$(document).find('title').text(default_document_title);
+
+		var visible_entries_guids = [];
+		$('.timeline').find('.timeline-entry').each(function (i, e) {
+			visible_entries_guids[visible_entries_guids.length] = $(e).data('guid');
+		});
+		$.post('/post/view', {'guids': visible_entries_guids}, function () {});
 	});
 	
 	$('.stati a').click(function(){
@@ -141,6 +150,27 @@ function refresh_timeline()
 		refresh_links_list();
 		refresh_files_list();
 	}, 'json');
+}
+
+
+function refresh_viewed() {
+	auth();
+
+	var visible_entries_guids = [];
+	$('.timeline').find('.timeline-entry').each(function (i, e) {
+		visible_entries_guids[visible_entries_guids.length] = $(e).data('guid');
+	});
+
+	$.post('/post/viewed', {'guids': visible_entries_guids}, function (data) {
+		$.each(data, function(guid, users) {
+			if(users.users.length > 0) {
+				if($('.timeline-entry[data-guid=' + guid + '] .viewed-by').length == 0 || $('.timeline-entry[data-guid=' + guid + '] .viewed-by').data('changed') != users.changed_hash) {
+					$('.timeline-entry[data-guid=' + guid + '] .viewed-by').remove();
+					$('.timeline-entry[data-guid=' + guid + ']').append('<div class="viewed-by" data-changed="' + users.changed_hash + '"><span class="them">' + users.users.join(', ') + '</span><i class="icon-eye-open"></i></div>');
+				}
+			}
+		});
+	});
 }
 
 

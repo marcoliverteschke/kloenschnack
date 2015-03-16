@@ -28,11 +28,35 @@ body {
 	width: 640px;
 }
 
+.timeline-entry {
+	margin: 2em 0;
+}
+
 .person {
 	color: #cccccc;
 	display: block;
 	font-family: @font-stack-sans-serif;
 	font-size: .75em;
+}
+
+.viewed-by {
+	color: #cccccc;
+	display: block;
+	font-family: @font-stack-sans-serif;
+	font-size: .75em;
+	margin: 0 0 1em 0;
+	text-align: right;
+
+	.them {
+		display: none;
+	}
+
+	&:hover {
+		.them {
+			display: inline-block;
+			margin-right: .5em;
+		}
+	}
 }
 
 pre {

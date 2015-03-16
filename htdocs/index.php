@@ -207,6 +207,60 @@
 		$id = R::store($post);
 	});
 
+	Flight::route('/post/view', function(){
+		if(isset(Flight::request()->data['guids']) && is_array(Flight::request()->data['guids']) && count(Flight::request()->data['guids']) > 0) {
+			$current_user = current_user();
+
+			foreach(Flight::request()->data['guids'] as $guid) {
+				if(preg_match("/^[a-z0-9]{32}$/", $guid)) {
+					$exists_query = R::getRow(
+						'SELECT count(*) AS got_that FROM posts_viewed WHERE guid = :guid AND user_id = :user_id',
+						array(':guid' => $guid, ':user_id' => $current_user->id)
+					);
+
+					if(isset($exists_query['got_that']) && (int)$exists_query['got_that'] === 0) {
+						R::exec(
+							'INSERT INTO posts_viewed VALUES(:guid, :user_id)',
+							array(':guid' => $guid, ':user_id' => $current_user->id)
+						);
+					}
+				}
+			}
+		}
+	});
+
+
+	Flight::route('/post/viewed', function(){
+		if(isset(Flight::request()->data['guids']) && is_array(Flight::request()->data['guids']) && count(Flight::request()->data['guids']) > 0) {
+			$current_user = current_user();
+
+			$views = array();
+			foreach(Flight::request()->data['guids'] as $guid) {
+				if(preg_match("/^[a-z0-9]{32}$/", $guid)) {
+					$viewed_query = R::getAll(
+						'SELECT u.realname FROM users u JOIN posts_viewed pv ON u.id = pv.user_id WHERE pv.guid = :guid ORDER BY realname ASC',
+						array(
+							':guid' => $guid
+						)
+					);
+					$users_hash = '';
+					if(is_array($viewed_query) && count($viewed_query) > 0) {
+						foreach($viewed_query as $a_view) {
+							if(isset($a_view['realname']) && strlen($a_view['realname']) > 0) {
+								$views[$guid]['users'][] = $a_view['realname'];
+								$users_hash .= $a_view['realname'];
+							}
+						}
+					}
+					$views[$guid]['changed_hash'] = md5($users_hash);
+				}
+			}
+			Flight::view()->set('data', json_encode($views));
+			Flight::render('json.php');
+		}
+	});
+
+
 	Flight::route('/post', function(){
 		update_activity_time();
 		$current_user = current_user();
