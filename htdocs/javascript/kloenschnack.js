@@ -23,7 +23,7 @@ $(function(){
 	event_template = Handlebars.compile(event_template_source);
 	list_entry_template_source = $('#list-entry-template').html();
 	list_entry_template = Handlebars.compile(list_entry_template_source);
-	
+
 	posts_queue = new PostsQueue;
 
 	if($('.timeline').length > 0)
@@ -47,11 +47,11 @@ $(function(){
 		do_post();
 		return false;
 	});
-	
+
 	$(document).on('click', '.users ul li', function(){
 		start_at_message($(this).text());
 	});
-	
+
 	$('.talkbox textarea').focus();
 
 	$('#fileupload').fileupload({
@@ -59,7 +59,7 @@ $(function(){
 		onProgress: function(id, fileName, loaded, total){
 		}
 	});
-	
+
 	$(window).blur(function(){
 		window_in_focus = false;
 	});
@@ -78,11 +78,11 @@ $(function(){
 		});
 		$.post('/post/view', {'guids': visible_entries_guids}, function () {});
 	});
-	
+
 	$('.stati a').click(function(){
 		$.post('/user/status/update', {'status' : $(this).attr('data-status')});
 	});
-	
+
 	if(typeof hits != 'undefined' && hits.length > 0)
 	{
 		add_posts_to_timeline(hits, '#hits');
@@ -92,7 +92,7 @@ $(function(){
 
 
 $.fn.selectRange = function(start, end) {
-    if(!end) end = start; 
+    if(!end) end = start;
     return this.each(function() {
         if (this.setSelectionRange) {
             this.focus();
@@ -184,7 +184,7 @@ function age_preview_images()
 			if(typeof created_ts != "undefined")
 			{
 				var created_millis = created_ts * 1000;
-				
+
 				if((now - created_millis) > previews_age_to_shrink)
 				{
 					$(e).parents('.file').addClass("aged");
@@ -261,7 +261,7 @@ function add_post_to_timeline(post, timeline_identifier) {
 				}
 			}
 		}
-	}	
+	}
 }
 
 
@@ -273,27 +273,27 @@ function notify(title, description, priority, sticky, identifier)
 			blip.play();
 		}
 	}
-	
+
 	if(typeof window.fluid != "undefined")
 	{
 		window.fluid.showGrowlNotification({
-			title: title, 
-			description: description, 
-			priority: priority, 
+			title: title,
+			description: description,
+			priority: priority,
 			sticky: sticky,
 			identifier: identifier
 		});
 	}
-	
-	
+
+
 /*	if (!("Notification" in window)) {
 		// check for Fluid/Growl integration, otherwise do nothing
 		if(typeof window.fluid != "undefined")
 		{
 			window.fluid.showGrowlNotification({
-				title: title, 
-				description: description, 
-				priority: priority, 
+				title: title,
+				description: description,
+				priority: priority,
 				sticky: sticky,
 				identifier: identifier
 			});
@@ -465,7 +465,7 @@ function trim11 (str) {
 /**
  * Handlebars templates
  */
- 
+
 Handlebars.registerHelper('humanTime', function(timestamp){
 	return 'am ' +  date("d.m.Y", timestamp) + ' um ' + date("H:i", timestamp) + ' Uhr';
 });

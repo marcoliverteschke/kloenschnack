@@ -73,7 +73,7 @@ pre {
 	background-color: #f0f0f0;
 	display: block;
 	padding: 1em;
-	
+
 	.preview {
 		border: 1px solid #aaaaaa;
 		display: block;
@@ -83,15 +83,15 @@ pre {
 		max-width: 100%;
 		width: auto;
 	}
-	
+
 	.fileicon {
 		display: inline-block;
 		margin-right: .5em;
 	}
-	
+
 	&.aged {
 		position: relative;
-		
+
 		&:after {
 			content: "\f002";
 			color: rgba(255, 255, 255, .8);
@@ -102,14 +102,14 @@ pre {
 			position: absolute;
 			text-shadow: 0 0 4px rgba(0, 0, 0, .25);
 		}
-		
+
 		&:hover:after {
 			content: "";
 		}
 
 		.preview {
 			max-width: 25%;
-			
+
 			&:hover {
 				-webkit-transition: max-width 1s;
 				-moz-transition: max-width 1s;
@@ -135,7 +135,7 @@ pre {
 		font-family: "FontAwesome";
 		.inline-block();
 		margin-right: .5em;
-		
+
 		a {
 			color: #000000;
 			text-decoration: none;
@@ -170,12 +170,12 @@ pre {
 	position: fixed;
 	width: 100%;
 	z-index: 3;
-	
+
 	.container {
 		padding-bottom: 1em;
 		padding-top: 1em;
 	}
-	
+
 	textarea {
 		height: 4em;
 		resize: none;
@@ -194,33 +194,33 @@ pre {
 .tabbar {
 	font-family: @font-stack-sans-serif;
 	font-size: .9em;
-	
+
 	.container {
 		padding: 0;
 	}
-	
+
 	ul, li {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-	
+
 	ul {
 		float: right;
-		
+
 		li {
 			float: left;
 			margin-left: 1em;
-			
+
 			a {
 				background-color: #eeeeee;
 				color: #000000;
 				display: inline-block;
 				padding: .5em 1em;
 				text-decoration: none;
-				
+
 				.drop-shadow(0, 1px, 2px, .5);
-				
+
 				&:hover {
 					.drop-shadow(0, 2px, 2px, .5);
 				}
@@ -242,20 +242,20 @@ pre {
 	font-size: .9em;
 	margin-bottom: 2em;
 	width: 250px;
-	
+
 	ul, li {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-	
+
 	ul {
 		padding: .5em 1em;
 		.drop-shadow(0, 1px, 2px, .5);
-		
+
 		li {
 			padding: .25em 0;
-			
+
 			a {
 				-moz-hyphens: auto;
 				-webkit-hyphens: auto;
@@ -276,7 +276,7 @@ input[type="submit"], .button {
 	padding: .25em;
 
 	.gradient();
-	
+
 	&:hover {
 		.gradient(#F5F5F5, #fff, #eee)
 	}
@@ -284,11 +284,11 @@ input[type="submit"], .button {
 
 .button {
 	position: relative;
-	
+
 	&, & * {
 		cursor: pointer;
 	}
-	
+
 	input[type="file"] {
 		left: 0;
 		opacity: 0;
@@ -304,7 +304,7 @@ input[type="submit"], .button {
 		list-style: none;
 		padding: 0;
 	}
-	
+
 	li {
 		margin: 1em 0;
 	}
@@ -318,7 +318,7 @@ input[type="submit"], .button {
 
 #hits {
 	padding: 2em 0;
-	
+
 	.match {
 		background-color: yellow;
 	}
@@ -329,7 +329,7 @@ input[type="submit"], .button {
 	.container {
 		width: 100%;
 	}
-	
+
 	.fileinput-button, .drawer {
 		display: none;
 	}

@@ -14,7 +14,7 @@
 			R::setup('mysql:host=localhost; dbname=kloenschnack_dev','root','root');
 		}
 	});
-	
+
 	Flight::before('render', function(){
 		Flight::view()->set('page_title', 'kloenschnack — really simple team messaging');
 		$current_user = current_user();
@@ -31,11 +31,11 @@
 		if(count($key_fragments) == 3)
 		{
 			$user	=	R::findOne(
-							'users', 
-							'id = ? AND last_login = ?', 
+							'users',
+							'id = ? AND last_login = ?',
 							array(
 								$key_fragments[1],
-								$key_fragments[2]								
+								$key_fragments[2]
 							)
 						);
 			if($user)
@@ -52,38 +52,38 @@
 		{
 //			error_log(kloencrypt(Flight::request()->data['user']['password']));
 			$user	=	R::findOne(
-							'users', 
+							'users',
 							'name = ? AND password = ?',
 							array(
-								Flight::request()->data['user']['name'], 
+								Flight::request()->data['user']['name'],
 								kloencrypt(Flight::request()->data['user']['password'])
 							)
 						);
-/*			$user	=	R::findOne(
-							'users', 
-							'name = ?',
-							array(
-								Flight::request()->data['user']['name']
-							)
-						);*/
+			// $user	=	R::findOne(
+			// 				'users',
+			// 				'name = ?',
+			// 				array(
+			// 					Flight::request()->data['user']['name']
+			// 				)
+			// 			);
 			if($user)
 			{
 				$now = time();
 				setcookie(
-					'kloenschnack_session', 
-					rand(100, 999) . '-' . $user->id . '-' . $now, 
-					$now + 60 * 60 * 24 * 14, 
+					'kloenschnack_session',
+					rand(100, 999) . '-' . $user->id . '-' . $now,
+					$now + 60 * 60 * 24 * 14,
 					'/');
 				$user->last_login = $now;
 				R::store($user);
-				
+
 				$login_event = R::dispense('events');
 				$login_event->event = 'login';
 				$login_event->message = 'hat sich angemeldet';
 				$login_event->created = time();
 				$login_event->user_id = $user->id;
 				R::store($login_event);
-				
+
 				header('Location: /');
 			} else {
 				Flight::redirect('/login');
@@ -112,13 +112,13 @@
 		Flight::view()->set('data', json_encode($users_array));
 		Flight::render('json.php');
 	});
-	
+
 	Flight::route('/user/status/update', function(){
 		$current_user = current_user();
 		if(!empty($current_user) && !empty(Flight::request()->data['status'])) {
 			$current_user->current_status = Flight::request()->data['status'];
 			R::store($current_user);
-		}		
+		}
 	});
 
 	Flight::route('/logout', function(){
@@ -137,32 +137,32 @@
 		}
 
 		setcookie(
-			'kloenschnack_session', 
-			null, 
-			$now - 60 * 60 * 24 * 14, 
+			'kloenschnack_session',
+			null,
+			$now - 60 * 60 * 24 * 14,
 			'/');
 		unset($_COOKIE['kloenschnack_session']);
 		Flight::redirect('/login');
 	});
 
 	Flight::route('/api/post/create', function(){
-		
+
 		$request = Flight::request();
-		
+
 		if($request->type == 'application/json') {
 			$body = $request->body;
 			if(strlen($body) > 0) {
 				$body_object = json_decode($body);
-				
+
 				if(isset($body_object->user) && strlen($body_object->user) > 0) {
 					$user	=	R::findOne(
-						'users', 
-						'api_key = ?', 
+						'users',
+						'api_key = ?',
 						array(
 							kloencrypt($body_object->user),
 						)
 					);
-								
+
 					if(!empty($user)) {
 						if(isset($body_object->message) && isset($body_object->message->body) && strlen($body_object->message->body) > 0) {
 							$post = R::dispense('posts');
@@ -268,7 +268,7 @@
 		$entries = R::getAll("SELECT postsDesc.id, postsDesc.body, '' as filename, '' as filetype, '' as filesize, postsDesc.created, '' as filealias, postsDesc.user_id, postsDesc.at_user_id, postsDesc.guid, users.realname, 'post' as type FROM postsunique AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id UNION SELECT filesDesc.id, '' as body, filesDesc.name as filename, filesDesc.type as filetype, filesDesc.size as filesize, filesDesc.created, filesDesc.alias as filealias, filesDesc.user_id, 0 as at_user_id, filesDesc.guid, users.realname, 'file' as type FROM filesunique AS filesDesc LEFT JOIN users ON filesDesc.user_id = users.id ORDER BY created DESC LIMIT 50");
 
 		$timeline_array = array();
-		
+
 		foreach($entries as $entry) {
 			if($entry['type'] == 'post') {
 
@@ -299,7 +299,7 @@
 				$timeline_array[md5('file-' . $entry['id'])]['guid'] = $entry['guid'];
 			}
 		}
-		
+
 		usort($timeline_array, 'sort_timeline');
 
 		Flight::view()->set('data', json_encode($timeline_array));
@@ -313,7 +313,7 @@
 		{
 			mkdir($assets_folder, 0755);
 		}
-		
+
 		foreach(Flight::request()->files['files']['tmp_name'] as $key => $value)
 		{
 			if(Flight::request()->files['files']['error'][$key] == 0)
@@ -340,12 +340,12 @@
 		$messages = array();
 		$hits = array();
 		$search = '';
-		
+
 		if(isset(Flight::request()->query['search']) && strlen(trim(Flight::request()->query['search'])) > 0)
 		{
 			$search = Flight::request()->query['search'];
 			$hits = R::getAll(
-				"SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, postsDesc.guid, users.realname, 'post' as type FROM postsunique AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id WHERE postsDesc.body LIKE :search ORDER BY created DESC", 
+				"SELECT postsDesc.id, postsDesc.body, postsDesc.created, postsDesc.user_id, postsDesc.at_user_id, postsDesc.guid, users.realname, 'post' as type FROM postsunique AS postsDesc LEFT JOIN users ON postsDesc.user_id = users.id WHERE postsDesc.body LIKE :search ORDER BY created DESC",
 				array(
 					':search' => sprintf('%%%s%%', $search)
 				)
@@ -358,11 +358,11 @@
 					$hit['author'] = abbreviate_name($hit["realname"]);
 					$hit['at_me'] = (int)$hit['at_user_id'] == $current_user->id;
 				}
-				
+
 				$hits = json_encode($hits);
 			}
 		}
-		
+
 		// get distinct days with activity
 		// SELECT DATE(FROM_UNIXTIME(created)) AS date FROM posts UNION SELECT DATE(FROM_UNIXTIME(created)) as date FROM files ORDER BY date ASC;
 		// get posts for last day or day from parameter
@@ -408,7 +408,7 @@
 	});
 
 	Flight::start();
-	
+
 	function sort_timeline($a, $b)
 	{
 		if($a['created'] == $b['created'])
@@ -417,16 +417,16 @@
 		}
 		return $a['created'] > $b['created'] ? +1 : -1;
 	}
-	
+
 	function get_file_icon($type, $name)
 	{
 		$icon_path = '/images/fileicons';
-		
+
 		if(preg_match("/text\/plain$/", $type))
 			return $icon_path . '/txt.png';
 		if(preg_match("/\/pdf$/", $type))
 			return $icon_path . '/pdf.png';
-			
+
 		if(preg_match("/application\/octet-stream$/", $type))
 		{
 			$filename_fragments = explode('.', $name);
@@ -435,15 +435,15 @@
 			if(preg_match("/^(md|markdown|mdown)$/", $filename_fragments[count($filename_fragments) - 1]))
 				return $icon_path . '/txt.png';
 		}
-		
+
 		return $icon_path . '/file.png';
 	}
-	
+
 	function kloencrypt($in)
 	{
 		return crypt($in, '$2y$31$kloenschnacktrittcampf$');
 	}
-	
+
 	function abbreviate_name($name)
 	{
 		return substr($name, 0, strrpos($name, " "));
@@ -458,11 +458,11 @@
 			if(count($key_fragments) == 3)
 			{
 				$user	=	R::findOne(
-								'users', 
-								'id = ? AND last_login = ?', 
+								'users',
+								'id = ? AND last_login = ?',
 								array(
 									$key_fragments[1],
-									$key_fragments[2]								
+									$key_fragments[2]
 								)
 							);
 			}
@@ -479,4 +479,3 @@
 			R::store($current_user);
 		}
 	}
-	
