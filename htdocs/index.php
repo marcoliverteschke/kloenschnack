@@ -247,7 +247,7 @@
 					if(is_array($viewed_query) && count($viewed_query) > 0) {
 						foreach($viewed_query as $a_view) {
 							if(isset($a_view['realname']) && strlen($a_view['realname']) > 0) {
-								$views[$guid]['users'][] = $a_view['realname'];
+								$views[$guid]['users'][] = $substring = substr($a_view['realname'], 0, strpos($a_view['realname'], ' '));;
 								$users_hash .= $a_view['realname'];
 							}
 						}
