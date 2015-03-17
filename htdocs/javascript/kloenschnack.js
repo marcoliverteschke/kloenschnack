@@ -14,6 +14,9 @@ var refresh_users_list_millis = 10000;
 var previews_aging_millis = 1000;
 var previews_age_to_shrink = 300000;
 var refresh_viewed_millis = 10000;
+var view_millis = 5000;
+
+var view_interval = null;
 
 
 $(function(){
@@ -62,6 +65,9 @@ $(function(){
 
 	$(window).blur(function(){
 		window_in_focus = false;
+		if(view_interval != null) {
+			window.clearInterval(view_interval);
+		}
 	});
 
 	$(window).focus(function(){
@@ -72,11 +78,10 @@ $(function(){
 		}
 		$(document).find('title').text(default_document_title);
 
-		var visible_entries_guids = [];
-		$('.timeline').find('.timeline-entry').each(function (i, e) {
-			visible_entries_guids[visible_entries_guids.length] = $(e).data('guid');
-		});
-		$.post('/post/view', {'guids': visible_entries_guids}, function () {});
+		open_your_eyes();
+		view_interval = window.setInterval(function () {
+			open_your_eyes();
+		}, view_millis);
 	});
 
 	$('.stati a').click(function(){
@@ -89,6 +94,15 @@ $(function(){
 	}
 
 });
+
+
+function open_your_eyes () {
+	var visible_entries_guids = [];
+	$('.timeline').find('.timeline-entry').each(function (i, e) {
+		visible_entries_guids[visible_entries_guids.length] = $(e).data('guid');
+	});
+	$.post('/post/view', {'guids': visible_entries_guids}, function () {});
+}
 
 
 $.fn.selectRange = function(start, end) {
