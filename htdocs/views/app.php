@@ -1,4 +1,5 @@
 <?php include('_tabbar.php'); ?>
+<ul id="typing-list"></ul>
 <section class="drawers">
 	<section class="drawer users">
 		<ul>

@@ -36,5 +36,8 @@
 	<script id="list-entry-template" type="text/x-handlebars-template">
 		<li class="{{class}}" title="{{title}}">{{{name}}}</li>
 	</script>
+	<script id="typing-list-entry-template" type="text/x-handlebars-template">
+		<li>{{{name}}} schreibt…</li>
+	</script>
 </body>
 </html>

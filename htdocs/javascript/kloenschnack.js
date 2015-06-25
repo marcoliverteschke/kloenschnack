@@ -15,6 +15,7 @@ var previews_aging_millis = 1000;
 var previews_age_to_shrink = 300000;
 var refresh_viewed_millis = 10000;
 var view_millis = 5000;
+var refresh_monkeys_with_typewriters_millis = 1000;
 
 var view_interval = null;
 
@@ -26,6 +27,8 @@ $(function(){
 	event_template = Handlebars.compile(event_template_source);
 	list_entry_template_source = $('#list-entry-template').html();
 	list_entry_template = Handlebars.compile(list_entry_template_source);
+	typing_list_entry_template_source = $('#typing-list-entry-template').html();
+	typing_list_entry_template = Handlebars.compile(typing_list_entry_template_source);
 
 	posts_queue = new PostsQueue;
 
@@ -37,12 +40,15 @@ $(function(){
 		window.setInterval(refresh_users_list, refresh_users_list_millis);
 		window.setInterval(age_preview_images, previews_aging_millis);
 		window.setInterval(refresh_viewed, refresh_viewed_millis);
+		window.setInterval(refresh_monkeys_with_typewriters, refresh_monkeys_with_typewriters_millis);
 	}
 
 	$('.no-touch .talkbox textarea').keyup(function(event){
 		if(event.keyCode == 13 && event.shiftKey === false)
 		{
 			do_post();
+		} else {
+			log_input();
 		}
 	});
 
@@ -94,6 +100,21 @@ $(function(){
 	}
 
 });
+
+
+function log_input() {
+	$.post('/user/type');
+}
+
+
+function refresh_monkeys_with_typewriters() {
+	$.get('/user/typing', function(data){
+		$('#typing-list').empty();
+		$.each(data, function(user){
+			$('#typing-list').append(typing_list_entry_template(data[user]));
+		});
+	});
+}
 
 
 function open_your_eyes () {

@@ -187,6 +187,29 @@
 		}
 	});
 
+
+	Flight::route('/user/type', function(){
+		$current_user = current_user();
+		$current_user->last_input = time();
+		R::store($current_user);
+	});
+
+
+	Flight::route('/user/typing', function(){
+		$current_user = current_user();
+		$active_users = R::getAll("SELECT users.id, users.realname, UNIX_TIMESTAMP() - last_input AS typing FROM users ORDER BY last_input DESC;");
+		$users_array = array();
+		foreach($active_users as $key => $user)
+		{
+			if($user['typing'] <= 5 && $user['id'] != $current_user->id) {
+				$users_array[$key]['name'] = $user['realname'];
+			}
+		}
+		Flight::view()->set('data', json_encode($users_array));
+		Flight::render('json.php');
+	});
+
+
 	Flight::route('/post/create', function(){
 		update_activity_time();
 		$post = R::dispense('posts');

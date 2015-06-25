@@ -328,6 +328,24 @@ input[type="submit"], .button {
 	}
 }
 
+#typing-list {
+	font-size: 12px;
+	left: 1em;
+	position: absolute;
+
+	&, & li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		color: #aaaaaa;
+		font-family: @font-stack-sans-serif;
+		margin: .5em 0;
+	}
+}
+
 
 @media all and (max-width: 640px) {
 	.container {
@@ -338,5 +356,3 @@ input[type="submit"], .button {
 		display: none;
 	}
 }
-
-
