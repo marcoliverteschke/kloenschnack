@@ -261,7 +261,7 @@
 			foreach(Flight::request()->data['guids'] as $guid) {
 				if(preg_match("/^[a-z0-9]{32}$/", $guid)) {
 					$viewed_query = R::getAll(
-						'SELECT u.realname FROM users u JOIN posts_viewed pv ON u.id = pv.user_id WHERE pv.guid = :guid ORDER BY realname ASC',
+						'SELECT DISTINCT u.realname FROM users u JOIN posts_viewed pv ON u.id = pv.user_id WHERE pv.guid = :guid ORDER BY realname ASC',
 						array(
 							':guid' => $guid
 						)
